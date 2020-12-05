@@ -27,13 +27,15 @@ public class Naipe extends JLabel {
     public static final int ALTO = 159;
     public static final int ANCHO = 104;
 
-    private final BufferedImage imagenAnverso;
     private static final BufferedImage imagenReverso = setImagenReverso();
-    private final Color SELECCION = new Color(0, 100, 255, 150);
+    private static final Color SELECCION = new Color(0, 100, 255, 150);
+    private static final Color MARCA = new Color(255, 120, 0, 150);
+
+    private final BufferedImage imagenAnverso;
     private final palo palo;
     private final valor valor;
 
-    private boolean bocaAbajo, seleccionado;
+    private boolean bocaAbajo, marcado, seleccionado;
 
     //*****************************************************************************************************//
     //******************************************** Constructor ********************************************//
@@ -77,6 +79,9 @@ public class Naipe extends JLabel {
         if (seleccionado) {
             g.setColor(SELECCION);
             g.fillRoundRect(0, 0, ANCHO, ALTO, 14, 14);
+        } else if (marcado) {
+            g.setColor(MARCA);
+            g.fillRoundRect(0, 0, ANCHO, ALTO, 14, 14);
         }
     }
 
@@ -91,6 +96,10 @@ public class Naipe extends JLabel {
 
     void setBocaAbajo(boolean bocaAbajo) {
         this.bocaAbajo = bocaAbajo;
+    }
+
+    void setMarcado(boolean marcado) {
+        this.marcado = marcado;
     }
 
     //******************************************************************************************************//

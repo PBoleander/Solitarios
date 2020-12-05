@@ -3,7 +3,6 @@ package juegos;
 import juegos.registro.Movimiento;
 import juegos.registro.Registro;
 import naipes.Monto;
-import naipes.Naipe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +24,6 @@ public abstract class Solitario extends JPanel implements MouseListener {
 
     protected abstract void iniciar(boolean reinicio);
     protected abstract boolean isVictoria();
-    // Coloca, si puede, el naipe seleccionado (si existe) en monto y devuelve si lo ha conseguido
-    protected abstract boolean colocarNaipeSeleccionadoEn(Monto monto);
-
 
     void deshacerMovimiento() {
         // Si hay monto seleccionado, se quita antes de proceder
@@ -63,21 +59,5 @@ public abstract class Solitario extends JPanel implements MouseListener {
                 i++;
             }
         }
-    }
-
-    // Devuelve si dos valores pasados por parámetro son consecutivos
-    protected boolean sonValoresConsecutivos(Naipe.valor valorMayor, Naipe.valor valorMenor) {
-        Naipe.valor[] valores = Naipe.valor.values();
-        // Índices que ocupan el valor mayor y el menor en el array valores
-        int iMayor = 0;
-        int iMenor = 0;
-
-        while (valorMayor != valores[iMayor] || valorMenor != valores[iMenor]) {
-            if (valorMayor != valores[iMayor]) iMayor++;
-            if (valorMenor != valores[iMenor]) iMenor++;
-        }
-
-        // Si los índices son consecutivos en el array, también lo son los naipes
-        return iMayor == iMenor + 1 || (iMayor == 0 && iMenor == valores.length - 1);
     }
 }

@@ -2,8 +2,6 @@ package juegos.solitarioA;
 
 import juegos.PanelControl;
 import juegos.Solitario;
-import juegos.registro.Movimiento;
-import juegos.registro.Registro;
 import naipes.*;
 
 import java.awt.*;
@@ -12,13 +10,12 @@ import java.awt.event.MouseEvent;
 public class SolitarioA extends Solitario {
 
     private final Baraja baraja;
-    private final Registro registro;
+    private final ControlMovimientosA controlMovimientos;
     private final Monto[] montosInferiores, montosSuperiores;
     private final Monto montoReserva10, montoManoPorSacar, montoManoSacado;
     private final VisorMensajesA visorMensajes;
 
     private Component componenteBajoPuntero;
-    private Naipe naipeInicialSuperior;
 
     private int numPartidas;
 
@@ -26,7 +23,6 @@ public class SolitarioA extends Solitario {
         super(new GridBagLayout());
 
         this.baraja = new Baraja();
-        this.registro = super.getRegistro();
 
         this.numPartidas = 0;
 
@@ -50,6 +46,9 @@ public class SolitarioA extends Solitario {
 
         this.montoReserva10 = new Monto(false, false, 10);
         montoReserva10.addMouseListener(this);
+
+        this.controlMovimientos = new ControlMovimientosA(montosSuperiores, montoReserva10, montoManoPorSacar,
+                montoManoSacado, super.getRegistro());
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -92,24 +91,7 @@ public class SolitarioA extends Solitario {
             } else if (numClics == 1 && componenteBajoPuntero == montoManoPorSacar) { // Clic sencillo
                 if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
 
-                int numNaipes = 0;
-                Naipe naipe = montoManoPorSacar.getUltimoNaipe();
-                if (naipe == null) { // Devuelve todas las cartas de nuevo al montoManoPorSacar
-                    while ((naipe = montoManoSacado.cogerNaipe()) != null) {
-                        if (montoManoPorSacar.meter(naipe)) numNaipes++;
-                    }
-                    // Registra el movimiento
-                    registro.registrar(new Movimiento(montoManoSacado, montoManoPorSacar, numNaipes));
-                }
-
-                // Pasa tres (o los que haya) naipes de montoManoPorSacar a montoManoSacado
-                numNaipes = 0;
-                for (int i = 0; i < 3; i++) {
-                    naipe = montoManoPorSacar.cogerNaipe();
-                    if (montoManoSacado.meter(naipe)) numNaipes++;
-                }
-                // Registra el movimiento
-                registro.registrar(new Movimiento(montoManoPorSacar, montoManoSacado, numNaipes));
+                controlMovimientos.pasarEntreMontosMano();
 
                 revalidate();
                 repaint();
@@ -129,7 +111,8 @@ public class SolitarioA extends Solitario {
         if (mouseEvent.getClickCount() < 2 && componenteBajoPuntero instanceof Monto) {
             Monto monto = (Monto) componenteBajoPuntero;
             if (monto != montoManoPorSacar) {
-                if (!colocarNaipeSeleccionadoEn(monto)) // Intenta colocar el naipeEnMano (si existe) en el monto clicado
+                if (!controlMovimientos.colocarNaipeSeleccionadoEn(monto)) // Intenta colocar el naipe seleccionado (si
+                    // existe) en el monto clicado
                     monto.cambiarSeleccion(); // Si no puede, cambia la selección del monto
             }
 
@@ -179,7 +162,7 @@ public class SolitarioA extends Solitario {
         montoManoSacado.clear();
         montoReserva10.clear();
 
-        registro.vaciar(); // Se vacía el registro
+        super.getRegistro().vaciar(); // Se vacía el registro
 
         visorMensajes.setVictoria(false); // Quita el mensaje de victoria si estaba
 
@@ -191,7 +174,9 @@ public class SolitarioA extends Solitario {
 
         for (Monto monto: montosInferiores) monto.meter(baraja.cogerNaipe());
 
-        montosSuperiores[0].meter(naipeInicialSuperior = baraja.cogerNaipe());
+        Naipe naipeInicialSuperior = baraja.cogerNaipe();
+        controlMovimientos.setNaipeInicialSuperior(naipeInicialSuperior);
+        montosSuperiores[0].meter(naipeInicialSuperior);
 
         while (baraja.getNumNaipes() > 0) montoManoPorSacar.meter(baraja.cogerNaipe());
     }
@@ -206,54 +191,15 @@ public class SolitarioA extends Solitario {
         return sumaNaipesSuperiores == Naipe.valor.values().length * Naipe.palo.values().length;
     }
 
-    @Override
-    // Coloca, si puede, el naipe seleccionado (si existe) en monto y devuelve si lo ha conseguido
-    protected boolean colocarNaipeSeleccionadoEn(Monto monto) {
-        if (monto != null && Monto.montoSeleccionado != null) {
-            if (monto != montoReserva10 && monto != montoManoPorSacar && monto != montoManoSacado) {
-                Monto montoSeleccionado = Monto.montoSeleccionado; // Variable necesaria (mirar comentarios siguientes)
-                if (sePuedeColocar(montoSeleccionado.getUltimoNaipe(), monto)) {
-                    montoSeleccionado.cambiarSeleccion(); // Cuando el naipe se ha movido ya no se puede cambiar
-                    monto.meter(montoSeleccionado.cogerNaipe()); // Si aquí usáramos Monto.montoSeleccionado
-                    // directamente ya sería null por la línea anterior
+    private boolean colocarNaipeSeleccionadoEn(Monto monto) {
+        boolean seHaPodidoColocar = controlMovimientos.colocarNaipeSeleccionadoEn(monto);
+        if (seHaPodidoColocar && isVictoria()) pintarVictoria();
 
-                    registro.registrar(new Movimiento(montoSeleccionado, monto)); // Se guarda el movimiento
-
-                    if (isVictoria()) {
-                        visorMensajes.setVictoria(true); // Si se ha ganado, se muestra un mensaje
-                        visorMensajes.setNumPartidas(numPartidas++);
-                    }
-
-                    return true;
-                }
-            }
-        }
-        return false;
+        return seHaPodidoColocar;
     }
 
-    // Indica si monto es uno de los superiores
-    private boolean esMontoSuperior(Monto monto) {
-        for (Monto montoSuperior: montosSuperiores) {
-            if (monto == montoSuperior) return true;
-        }
-        return false;
-    }
-
-    // Indica si naipe se puede colocar en monto
-    private boolean sePuedeColocar(Naipe naipe, Monto monto) {
-        if (esMontoSuperior(monto)) {
-            if (monto.getNumNaipes() == 0) { // En monto superior vacío sólo puede ir carta con valor igual al del
-                // primer naipe que se ha colocado en el primer monto superior al inicio de la partida
-                return (naipe.getValor() == naipeInicialSuperior.getValor());
-
-                // Si el monto superior está ocupado, ha de ser del mismo palo y con valor = valor de la última carta
-                // + 1
-            } else return (naipe.getPalo() == monto.getUltimoNaipe().getPalo() &&
-                    sonValoresConsecutivos(naipe.getValor(), monto.getUltimoNaipe().getValor()));
-
-            // Si el monto no es superior, el monto ha de estar vacío o la carta a poner debe ser de distinto palo y
-            // con un valor inmediatamente inferior al de la última carta de ese monto
-        } else return (monto.getNumNaipes() == 0 || (naipe.getPalo() != monto.getUltimoNaipe().getPalo() &&
-                sonValoresConsecutivos(monto.getUltimoNaipe().getValor(), naipe.getValor())));
+    private void pintarVictoria() {
+        visorMensajes.setVictoria(true); // Si se ha ganado, se muestra un mensaje
+        visorMensajes.setNumPartidas(numPartidas++);
     }
 }
