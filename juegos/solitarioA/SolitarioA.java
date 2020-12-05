@@ -47,8 +47,8 @@ public class SolitarioA extends Solitario {
         this.montoReserva10 = new Monto(false, false, 10);
         montoReserva10.addMouseListener(this);
 
-        this.controlMovimientos = new ControlMovimientosA(montosSuperiores, montoReserva10, montoManoPorSacar,
-                montoManoSacado, super.getRegistro());
+        this.controlMovimientos = new ControlMovimientosA(montosInferiores, montosSuperiores, montoReserva10,
+                montoManoPorSacar, montoManoSacado, super.getRegistro());
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -151,6 +151,22 @@ public class SolitarioA extends Solitario {
     }
 
     @Override
+    protected void deshacerMovimiento() {
+        super.deshacerMovimiento();
+
+        controlMovimientos.identificarNaipesQuePuedenSubir();
+        controlMovimientos.identificarNaipesQueVanInferiores();
+    }
+
+    @Override
+    protected void rehacerMovimiento() {
+        super.rehacerMovimiento();
+
+        controlMovimientos.identificarNaipesQuePuedenSubir();
+        controlMovimientos.identificarNaipesQueVanInferiores();
+    }
+
+    @Override
     protected void iniciar(boolean reinicio) {
         if (!isVictoria()) visorMensajes.setNumPartidas(numPartidas++); // Se incrementa después porque las partidas
         // se cuentan cuando acaban
@@ -179,6 +195,9 @@ public class SolitarioA extends Solitario {
         montosSuperiores[0].meter(naipeInicialSuperior);
 
         while (baraja.getNumNaipes() > 0) montoManoPorSacar.meter(baraja.cogerNaipe());
+
+        controlMovimientos.identificarNaipesQuePuedenSubir();
+        controlMovimientos.identificarNaipesQueVanInferiores();
     }
 
     @Override

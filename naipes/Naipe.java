@@ -29,13 +29,14 @@ public class Naipe extends JLabel {
 
     private static final BufferedImage imagenReverso = setImagenReverso();
     private static final Color SELECCION = new Color(0, 100, 255, 150);
-    private static final Color MARCA = new Color(255, 120, 0, 150);
+    private static final Color MARCA_INFERIOR = new Color(0, 200, 0, 150);
+    private static final Color MARCA_SUBIDA = new Color(255, 120, 0, 150);
 
     private final BufferedImage imagenAnverso;
     private final palo palo;
     private final valor valor;
 
-    private boolean bocaAbajo, marcado, seleccionado;
+    private boolean bocaAbajo, marcadoInferior, marcadoSubida, seleccionado;
 
     //*****************************************************************************************************//
     //******************************************** Constructor ********************************************//
@@ -69,6 +70,14 @@ public class Naipe extends JLabel {
         return this.valor;
     }
 
+    public void setMarcadoInferior(boolean marcadoInferior) {
+        this.marcadoInferior = marcadoInferior;
+    }
+
+    public void setMarcadoSubida(boolean marcadoSubida) {
+        this.marcadoSubida = marcadoSubida;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,8 +88,11 @@ public class Naipe extends JLabel {
         if (seleccionado) {
             g.setColor(SELECCION);
             g.fillRoundRect(0, 0, ANCHO, ALTO, 14, 14);
-        } else if (marcado) {
-            g.setColor(MARCA);
+        } else if (marcadoSubida) {
+            g.setColor(MARCA_SUBIDA);
+            g.fillRoundRect(0, 0, ANCHO, ALTO, 14, 14);
+        } else if (marcadoInferior) {
+            g.setColor(MARCA_INFERIOR);
             g.fillRoundRect(0, 0, ANCHO, ALTO, 14, 14);
         }
     }
@@ -96,10 +108,6 @@ public class Naipe extends JLabel {
 
     void setBocaAbajo(boolean bocaAbajo) {
         this.bocaAbajo = bocaAbajo;
-    }
-
-    void setMarcado(boolean marcado) {
-        this.marcado = marcado;
     }
 
     //******************************************************************************************************//

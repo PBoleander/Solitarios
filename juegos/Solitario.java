@@ -25,7 +25,7 @@ public abstract class Solitario extends JPanel implements MouseListener {
     protected abstract void iniciar(boolean reinicio);
     protected abstract boolean isVictoria();
 
-    void deshacerMovimiento() {
+    protected void deshacerMovimiento() {
         // Si hay monto seleccionado, se quita antes de proceder
         if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
 
@@ -43,7 +43,7 @@ public abstract class Solitario extends JPanel implements MouseListener {
         }
     }
 
-    void rehacerMovimiento() {
+    protected void rehacerMovimiento() {
         // Si hay monto seleccionado, se quita antes de proceder
         if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
 
