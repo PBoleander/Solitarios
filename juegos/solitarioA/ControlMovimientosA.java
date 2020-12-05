@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 class ControlMovimientosA {
 
+    private final ArrayList<Monto> montosQuePuedenSubir;
     private final ArrayList<Naipe> naipesQuePuedenSubir, naipesQueVanAInferiores;
     private final Monto montoReserva, montoManoPorSacar, montoManoSacado;
     private final Monto[] montosInferiores, montosSuperiores;
@@ -25,6 +26,7 @@ class ControlMovimientosA {
         this.montoManoPorSacar = montoManoPorSacar;
         this.montoManoSacado = montoManoSacado;
 
+        this.montosQuePuedenSubir = new ArrayList<>();
         this.naipesQuePuedenSubir = new ArrayList<>();
         this.naipesQueVanAInferiores = new ArrayList<>();
 
@@ -69,19 +71,26 @@ class ControlMovimientosA {
     void identificarNaipesQuePuedenSubir() {
         if (!naipesQuePuedenSubir.isEmpty()) {
             marcarNaipesSubidaPosibles(false);
+            montosQuePuedenSubir.clear();
             naipesQuePuedenSubir.clear();
         }
 
         for (Monto montoSuperior: montosSuperiores) {
-            if (sePuedeColocar(montoManoSacado.getUltimoNaipe(), montoSuperior))
+            if (sePuedeColocar(montoManoSacado.getUltimoNaipe(), montoSuperior)) {
                 naipesQuePuedenSubir.add(montoManoSacado.getUltimoNaipe());
+                montosQuePuedenSubir.add(montoManoSacado);
+            }
 
-            if (sePuedeColocar(montoReserva.getUltimoNaipe(), montoSuperior))
+            if (sePuedeColocar(montoReserva.getUltimoNaipe(), montoSuperior)) {
                 naipesQuePuedenSubir.add(montoReserva.getUltimoNaipe());
+                montosQuePuedenSubir.add(montoReserva);
+            }
 
             for (Monto montoInferior: montosInferiores) {
-                if (sePuedeColocar(montoInferior.getUltimoNaipe(), montoSuperior))
+                if (sePuedeColocar(montoInferior.getUltimoNaipe(), montoSuperior)) {
                     naipesQuePuedenSubir.add(montoInferior.getUltimoNaipe());
+                    montosQuePuedenSubir.add(montoInferior);
+                }
             }
         }
 
@@ -134,6 +143,25 @@ class ControlMovimientosA {
         identificarNaipesQueVanInferiores();
     }
 
+    void subirTodosNaipesPosibles() {
+        while (!montosQuePuedenSubir.isEmpty()) {
+            for (Monto monto: montosQuePuedenSubir) {
+                subir(monto);
+            }
+            identificarNaipesQuePuedenSubir(); // Actualiza la lista para seguir subiendo naipes
+        }
+    }
+
+    private void subir(Monto monto) {
+        for (Monto montoSuperior: montosSuperiores) {
+            if (sePuedeColocar(monto.getUltimoNaipe(), montoSuperior)) {
+                montoSuperior.meter(monto.cogerNaipe());
+                registro.registrar(new Movimiento(monto, montoSuperior));
+                return;
+            }
+        }
+    }
+
     // Indica si monto es uno de los superiores
     private boolean esMontoSuperior(Monto monto) {
         for (Monto montoSuperior: montosSuperiores) {
@@ -159,19 +187,20 @@ class ControlMovimientosA {
         if (naipe != null && monto != null) {
             if (monto != montoReserva && monto != montoManoPorSacar && monto != montoManoSacado) {
                 if (esMontoSuperior(monto)) {
-                    if (monto.getNumNaipes() == 0) { // En monto superior vacío sólo puede ir carta con valor igual al del
-                        // primer naipe que se ha colocado en el primer monto superior al inicio de la partida
+                    if (monto.getNumNaipes() == 0) { // En monto superior vacío sólo puede ir carta con valor igual al
+                        // del primer naipe que se ha colocado en el primer monto superior al inicio de la partida
                         return (naipe.getValor() == naipeInicialSuperior.getValor());
 
-                        // Si el monto superior está ocupado, ha de ser del mismo palo y con valor = valor de la última carta
-                        // + 1
+                        // Si el monto superior está ocupado, ha de ser del mismo palo y con valor = valor de la última
+                        // carta + 1
                     } else return (naipe.getPalo() == monto.getUltimoNaipe().getPalo() &&
                             sonValoresConsecutivos(naipe.getValor(), monto.getUltimoNaipe().getValor()));
 
                 } else { // El monto no es superior
-                    // Cuando la carta sea la primera que puede ocupar monto superior no se debe poder meter, ni otra carta
-                    // ponerse sobre ésta.
-                    if ((monto.getNumNaipes() > 0 && monto.getUltimoNaipe().getValor() == naipeInicialSuperior.getValor()) ||
+                    // Cuando la carta sea la primera que puede ocupar monto superior no se debe poder meter, ni otra
+                    // carta ponerse sobre ésta.
+                    if ((monto.getNumNaipes() > 0 &&
+                            monto.getUltimoNaipe().getValor() == naipeInicialSuperior.getValor()) ||
                             naipe.getValor() == naipeInicialSuperior.getValor()) return false;
 
                         // El monto ha de estar vacío o la carta a poner debe ser de distinto palo y con un valor

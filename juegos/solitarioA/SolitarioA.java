@@ -72,29 +72,44 @@ public class SolitarioA extends Solitario {
     public void mouseClicked(MouseEvent mouseEvent) {
         if (componenteBajoPuntero instanceof Monto) {
             int numClics = mouseEvent.getClickCount();
-            
-            if (numClics > 0 && numClics % 2 == 0) { // Doble clic (intenta subir carta a montos superiores)
-                if (componenteBajoPuntero != montoManoPorSacar) {
-                    Monto monto = (Monto) componenteBajoPuntero;
-                    if (Monto.montoSeleccionado == null) // En teoría no debería suceder pero por si acaso
-                        monto.cambiarSeleccion(); // Para que colocar pueda hacer la comprobación correctamente
+            int boton = mouseEvent.getButton();
 
-                    /* Prueba si algún monto superior acepta el naipe seleccionado */
-                    int i = 0;
-                    while (i < montosSuperiores.length && !colocarNaipeSeleccionadoEn(montosSuperiores[i]))
-                        i++;
+            if (!isVictoria()) {
+
+                if (boton == MouseEvent.BUTTON3 && numClics == 2) { // Doble clic secundario
+                    controlMovimientos.subirTodosNaipesPosibles();
+
+                    if (isVictoria()) pintarVictoria();
 
                     revalidate();
                     repaint();
+
+                } else if (boton == MouseEvent.BUTTON1) { // Clic izquierdo
+
+                    if (numClics > 0 && numClics % 2 == 0) { // Doble clic (intenta subir carta a montos superiores)
+                        if (componenteBajoPuntero != montoManoPorSacar) {
+                            Monto monto = (Monto) componenteBajoPuntero;
+                            if (Monto.montoSeleccionado == null) // En teoría no debería suceder pero por si acaso
+                                monto.cambiarSeleccion(); // Para que colocar pueda hacer la comprobación correctamente
+
+                            /* Prueba si algún monto superior acepta el naipe seleccionado */
+                            int i = 0;
+                            while (i < montosSuperiores.length && !colocarNaipeSeleccionadoEn(montosSuperiores[i]))
+                                i++;
+
+                            revalidate();
+                            repaint();
+                        }
+
+                    } else if (numClics == 1 && componenteBajoPuntero == montoManoPorSacar) { // Clic sencillo
+                        if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
+
+                        controlMovimientos.pasarEntreMontosMano();
+
+                        revalidate();
+                        repaint();
+                    }
                 }
-
-            } else if (numClics == 1 && componenteBajoPuntero == montoManoPorSacar) { // Clic sencillo
-                if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
-
-                controlMovimientos.pasarEntreMontosMano();
-
-                revalidate();
-                repaint();
             }
         }
     }
@@ -108,16 +123,19 @@ public class SolitarioA extends Solitario {
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         // No debe interferir con el doble clic (así se evita que se deseleccione el monto doble clicado)
-        if (mouseEvent.getClickCount() < 2 && componenteBajoPuntero instanceof Monto) {
-            Monto monto = (Monto) componenteBajoPuntero;
-            if (monto != montoManoPorSacar) {
-                if (!controlMovimientos.colocarNaipeSeleccionadoEn(monto)) // Intenta colocar el naipe seleccionado (si
-                    // existe) en el monto clicado
-                    monto.cambiarSeleccion(); // Si no puede, cambia la selección del monto
-            }
+        if (!isVictoria() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-            revalidate();
-            repaint();
+            if (mouseEvent.getClickCount() < 2 && componenteBajoPuntero instanceof Monto) {
+                Monto monto = (Monto) componenteBajoPuntero;
+                if (monto != montoManoPorSacar) {
+                    if (!controlMovimientos.colocarNaipeSeleccionadoEn(monto)) // Intenta colocar el naipe seleccionado
+                        // (si existe) en el monto clicado
+                        monto.cambiarSeleccion(); // Si no puede, cambia la selección del monto
+                }
+
+                revalidate();
+                repaint();
+            }
         }
     }
 
@@ -127,12 +145,15 @@ public class SolitarioA extends Solitario {
      */
     @Override
     public void mouseReleased(MouseEvent mouseEvent) { // Después de arrastrar (clickCount = 0)
-        if (mouseEvent.getClickCount() == 0 && componenteBajoPuntero instanceof Monto) {
-            Monto monto = (Monto) componenteBajoPuntero;
-            colocarNaipeSeleccionadoEn(monto);
+        if (!isVictoria() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-            revalidate();
-            repaint();
+            if (mouseEvent.getClickCount() == 0 && componenteBajoPuntero instanceof Monto) {
+                Monto monto = (Monto) componenteBajoPuntero;
+                colocarNaipeSeleccionadoEn(monto);
+
+                revalidate();
+                repaint();
+            }
         }
     }
 
