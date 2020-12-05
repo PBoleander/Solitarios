@@ -59,6 +59,9 @@ public class PanelControl extends JPanel implements ActionListener {
         add(chkMarcadoSuperior, c);
         c.gridy = 3;
         add(chkMarcadoInferior, c);
+
+        solitario.setMarcadoInferior(chkMarcadoInferior.isSelected());
+        solitario.setMarcadoSuperior(chkMarcadoSuperior.isSelected());
     }
 
     @Override

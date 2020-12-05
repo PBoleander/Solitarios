@@ -192,6 +192,7 @@ public class SolitarioA extends Solitario {
 
         Naipe naipeInicialSuperior = baraja.cogerNaipe();
         controlMovimientos.setNaipeInicialSuperior(naipeInicialSuperior);
+        visorMensajes.setValorNaipeSuperiorInicial(naipeInicialSuperior.getValor());
         montosSuperiores[0].meter(naipeInicialSuperior);
 
         while (baraja.getNumNaipes() > 0) montoManoPorSacar.meter(baraja.cogerNaipe());
