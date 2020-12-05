@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class PanelControl extends JPanel implements ActionListener {
 
-    private final Boton btnDeshacer, btnInicio, btnReinicio;
+    private final Boton btnDeshacer, btnRehacer, btnInicio, btnReinicio;
     private final Solitario solitario;
 
     public PanelControl(Solitario solitario) {
@@ -18,20 +18,25 @@ public class PanelControl extends JPanel implements ActionListener {
         this.solitario = solitario;
 
         this.btnDeshacer = new Boton("Deshacer");
-        this.btnInicio = new Boton("Iniciar partida");
-        this.btnReinicio = new Boton("Reiniciar partida");
+        this.btnRehacer = new Boton("Rehacer");
+        this.btnInicio = new Boton("Nueva");
+        this.btnReinicio = new Boton("Reiniciar");
 
         btnDeshacer.addActionListener(this);
+        btnRehacer.addActionListener(this);
         btnInicio.addActionListener(this);
         btnReinicio.addActionListener(this);
 
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(20, 24, 0, 0);
         add(btnInicio, c);
-        c.gridy = 1;
+        c.gridx = 1;
         add(btnReinicio, c);
-        c.gridy = 2;
+        c.gridx = 0;
+        c.gridy = 1;
         add(btnDeshacer, c);
+        c.gridx = 1;
+        add(btnRehacer, c);
     }
 
     @Override
@@ -42,10 +47,22 @@ public class PanelControl extends JPanel implements ActionListener {
             solitario.iniciar(false);
 
         } else if (source.equals(btnReinicio)) {
-            if (!solitario.isVictoria()) solitario.iniciar(true);
+            if (!solitario.isVictoria()) {
+                solitario.iniciar(true);
+            }
 
         } else if (source.equals(btnDeshacer)) {
-            if (!solitario.isVictoria()) solitario.deshacerMovimiento();
+            if (!solitario.isVictoria()) {
+                solitario.deshacerMovimiento();
+            }
+
+        } else if (source.equals(btnRehacer)) {
+            if (!solitario.isVictoria()) {
+                solitario.rehacerMovimiento();
+            }
         }
+
+        solitario.revalidate();
+        solitario.repaint();
     }
 }

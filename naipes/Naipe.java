@@ -85,8 +85,8 @@ public class Naipe extends JLabel {
     //*****************************************************************************************************//
 
     // Selecciona el naipe si no hay ningún otro seleccionado o lo deselecciona si ya estaba seleccionado
-    boolean cambiarSeleccion() {
-        return seleccionado = !seleccionado;
+    void cambiarSeleccion() {
+        seleccionado = !seleccionado;
     }
 
     void setBocaAbajo(boolean bocaAbajo) {

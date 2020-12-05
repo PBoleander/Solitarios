@@ -49,7 +49,7 @@ class VisorMontosA extends JPanel {
 
         c.gridheight = 1;
         c.gridx = 0;
-        c.insets = new Insets(3, hGap, vGap, hGap); // Para mantener alineado montoReserva con los inferiores a pesar
+        c.insets = new Insets(1, hGap, vGap, hGap); // Para mantener alineado montoReserva con los inferiores a pesar
         // de la etiqueta del nº de naipes
         add(rellenarPanel(etiquetaReserva, montoReserva), c);
 
@@ -83,9 +83,10 @@ class VisorMontosA extends JPanel {
         panel.setOpaque(false);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.WEST;
+        c.anchor = GridBagConstraints.WEST; // Etiqueta comienza en el lado izquierdo
         panel.add(etiqueta, c);
         c.gridy = 1;
+        c.insets = new Insets(2, 0, 0, 0); // Espacio vertical entre monto y etiqueta
         panel.add(monto, c);
 
         return panel;

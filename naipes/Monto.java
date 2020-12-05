@@ -25,6 +25,7 @@ public class Monto extends JLayeredPane {
         this.gap = todosNaipesIdentificables ? VGAP_VISIBLE : VGAP_INVISIBLE;
         this.naipes = new ArrayList<>();
 
+        // Con esto el tamaño de VisorMontos será el correcto y estrictamente necesario
         setPreferredSize(new Dimension(Naipe.ANCHO, Naipe.ALTO + maxNaipes * gap));
     }
 
@@ -45,7 +46,6 @@ public class Monto extends JLayeredPane {
 
             naipe.setBounds(0, getNumNaipes() * gap, Naipe.ANCHO, Naipe.ALTO);
             add(naipe, Integer.valueOf(getNumNaipes()));
-            setSize(new Dimension(Naipe.ANCHO, Naipe.ALTO + getNumNaipes() * gap));
 
             return this.naipes.add(naipe);
         }
@@ -68,7 +68,6 @@ public class Monto extends JLayeredPane {
             Naipe naipe = this.naipes.remove(size - 1);
 
             remove(naipe);
-            setSize(new Dimension(Naipe.ANCHO, Naipe.ALTO + (size - 1) * gap));
 
             return naipe;
         } else return null;
@@ -92,7 +91,7 @@ public class Monto extends JLayeredPane {
 
     // Selecciona o deselecciona
     // Devuelve si el naipe ha sido seleccionado
-    public boolean cambiarSeleccion() {
+    public void cambiarSeleccion() {
         if (getNumNaipes() > 0) {
             if (montoSeleccionado == this) montoSeleccionado = null;
             else {
@@ -101,8 +100,7 @@ public class Monto extends JLayeredPane {
 
                 montoSeleccionado = this;
             }
-            return getUltimoNaipe().cambiarSeleccion();
+            getUltimoNaipe().cambiarSeleccion();
         }
-        return false;
     }
 }

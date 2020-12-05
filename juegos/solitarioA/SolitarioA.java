@@ -84,6 +84,9 @@ public class SolitarioA extends Solitario {
                     int i = 0;
                     while (i < montosSuperiores.length && !colocarNaipeSeleccionadoEn(montosSuperiores[i]))
                         i++;
+
+                    revalidate();
+                    repaint();
                 }
 
             } else if (numClics == 1 && componenteBajoPuntero == montoManoPorSacar) { // Clic sencillo
@@ -107,10 +110,10 @@ public class SolitarioA extends Solitario {
                 }
                 // Registra el movimiento
                 registro.registrar(new Movimiento(montoManoPorSacar, montoManoSacado, numNaipes));
-            }
 
-            validate();
-            repaint();
+                revalidate();
+                repaint();
+            }
         }
     }
 
@@ -130,7 +133,7 @@ public class SolitarioA extends Solitario {
                     monto.cambiarSeleccion(); // Si no puede, cambia la selección del monto
             }
 
-            validate();
+            revalidate();
             repaint();
         }
     }
@@ -145,7 +148,7 @@ public class SolitarioA extends Solitario {
             Monto monto = (Monto) componenteBajoPuntero;
             colocarNaipeSeleccionadoEn(monto);
 
-            validate();
+            revalidate();
             repaint();
         }
     }
@@ -191,9 +194,6 @@ public class SolitarioA extends Solitario {
         montosSuperiores[0].meter(naipeInicialSuperior = baraja.cogerNaipe());
 
         while (baraja.getNumNaipes() > 0) montoManoPorSacar.meter(baraja.cogerNaipe());
-
-        revalidate();
-        repaint();
     }
 
     @Override

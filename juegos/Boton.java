@@ -16,7 +16,7 @@ class Boton extends JButton {
 
         setOpaque(false);
 
-        setPreferredSize(new Dimension(135, 35));
+        setPreferredSize(new Dimension(120, 35));
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
