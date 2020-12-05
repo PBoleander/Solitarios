@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 public class PanelControl extends JPanel implements ActionListener {
 
     private final Boton btnDeshacer, btnRehacer, btnInicio, btnReinicio;
+    private final JCheckBox chkMarcadoInferior, chkMarcadoSuperior;
     private final Solitario solitario;
 
     public PanelControl(Solitario solitario) {
@@ -27,6 +28,19 @@ public class PanelControl extends JPanel implements ActionListener {
         btnInicio.addActionListener(this);
         btnReinicio.addActionListener(this);
 
+        this.chkMarcadoInferior = new JCheckBox("Marcar naipes a inferiores", false);
+        this.chkMarcadoSuperior = new JCheckBox("Marcar naipes a superiores", false);
+
+        chkMarcadoInferior.addActionListener(this);
+        chkMarcadoSuperior.addActionListener(this);
+
+        chkMarcadoInferior.setOpaque(false);
+        chkMarcadoSuperior.setOpaque(false);
+        chkMarcadoInferior.setForeground(Color.WHITE);
+        chkMarcadoSuperior.setForeground(Color.WHITE);
+        chkMarcadoInferior.setFont(Boton.fuente);
+        chkMarcadoSuperior.setFont(Boton.fuente);
+
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(20, 24, 0, 0);
         add(btnInicio, c);
@@ -37,6 +51,14 @@ public class PanelControl extends JPanel implements ActionListener {
         add(btnDeshacer, c);
         c.gridx = 1;
         add(btnRehacer, c);
+
+        c.anchor = GridBagConstraints.WEST;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 2;
+        add(chkMarcadoSuperior, c);
+        c.gridy = 3;
+        add(chkMarcadoInferior, c);
     }
 
     @Override
@@ -60,6 +82,12 @@ public class PanelControl extends JPanel implements ActionListener {
             if (!solitario.isVictoria()) {
                 solitario.rehacerMovimiento();
             }
+        } else if (source.equals(chkMarcadoInferior)) {
+            solitario.setMarcadoInferior(chkMarcadoInferior.isSelected());
+
+        } else if (source.equals(chkMarcadoSuperior)) {
+            solitario.setMarcadoSuperior(chkMarcadoSuperior.isSelected());
+
         }
 
         solitario.revalidate();

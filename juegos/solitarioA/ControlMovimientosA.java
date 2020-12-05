@@ -14,6 +14,7 @@ class ControlMovimientosA {
     private final Monto[] montosInferiores, montosSuperiores;
     private final Registro registro;
 
+    private boolean marcadoInferior, marcadoSuperior;
     private Naipe naipeInicialSuperior;
 
     ControlMovimientosA(Monto[] montosInferiores, Monto[] montosSuperiores, Monto montoReserva, Monto montoManoPorSacar,
@@ -28,6 +29,16 @@ class ControlMovimientosA {
         this.naipesQueVanAInferiores = new ArrayList<>();
 
         this.registro = registro;
+    }
+
+    void setMarcadoInferior(boolean marcadoInferior) {
+        this.marcadoInferior = marcadoInferior;
+        marcarNaipesInferiorPosibles(marcadoInferior);
+    }
+
+    void setMarcadoSuperior(boolean marcadoSuperior) {
+        this.marcadoSuperior = marcadoSuperior;
+        marcarNaipesSubidaPosibles(marcadoSuperior);
     }
 
     void setNaipeInicialSuperior(Naipe naipeInicialSuperior) {
@@ -74,7 +85,7 @@ class ControlMovimientosA {
             }
         }
 
-        marcarNaipesSubidaPosibles(true); // TODO Cambiar por una opción
+        marcarNaipesSubidaPosibles(marcadoSuperior);
     }
 
     void identificarNaipesQueVanInferiores() {
@@ -96,7 +107,7 @@ class ControlMovimientosA {
             }
         }
 
-        marcarNaipesInferiorPosibles(true); // TODO Cambiar por una opción
+        marcarNaipesInferiorPosibles(marcadoInferior);
     }
 
     void pasarEntreMontosMano() {

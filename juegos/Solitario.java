@@ -24,6 +24,8 @@ public abstract class Solitario extends JPanel implements MouseListener {
 
     protected abstract void iniciar(boolean reinicio);
     protected abstract boolean isVictoria();
+    protected abstract void setMarcadoInferior(boolean marcadoInferior);
+    protected abstract void setMarcadoSuperior(boolean marcadoSuperior);
 
     protected void deshacerMovimiento() {
         // Si hay monto seleccionado, se quita antes de proceder

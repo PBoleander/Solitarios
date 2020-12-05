@@ -210,6 +210,17 @@ public class SolitarioA extends Solitario {
         return sumaNaipesSuperiores == Naipe.valor.values().length * Naipe.palo.values().length;
     }
 
+    @Override
+    protected void setMarcadoInferior(boolean marcadoInferior) {
+        controlMovimientos.setMarcadoInferior(marcadoInferior);
+    }
+
+    @Override
+    protected void setMarcadoSuperior(boolean marcadoSuperior) {
+        controlMovimientos.setMarcadoSuperior(marcadoSuperior);
+    }
+
+
     private boolean colocarNaipeSeleccionadoEn(Monto monto) {
         boolean seHaPodidoColocar = controlMovimientos.colocarNaipeSeleccionadoEn(monto);
         if (seHaPodidoColocar && isVictoria()) pintarVictoria();

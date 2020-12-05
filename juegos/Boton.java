@@ -5,7 +5,7 @@ import java.awt.*;
 
 class Boton extends JButton {
 
-    private static final Font fuente = new Font(Font.DIALOG, Font.PLAIN, 12);
+    static final Font fuente = new Font(Font.DIALOG, Font.PLAIN, 12);
 
     //*****************************************************************************************************//
     //******************************************** Constructor ********************************************//
