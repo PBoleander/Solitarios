@@ -61,6 +61,8 @@ public class SolitarioA extends Solitario {
         add(new VisorMontosA(montosInferiores, montosSuperiores, montoReserva10, montoManoPorSacar, montoManoSacado), c);
 
         setBackground(new Color(0, 150, 0));
+
+        iniciar(false);
     }
 
     /*

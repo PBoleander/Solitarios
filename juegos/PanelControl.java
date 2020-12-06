@@ -69,10 +69,11 @@ public class PanelControl extends JPanel implements ActionListener {
         Object source = actionEvent.getSource();
 
         if (source.equals(btnInicio)) {
-            solitario.iniciar(false);
+            if (solitario.isVictoria() || mostrarConfirmacion(false) == JOptionPane.YES_OPTION)
+                solitario.iniciar(false);
 
         } else if (source.equals(btnReinicio)) {
-            if (!solitario.isVictoria()) {
+            if (!solitario.isVictoria() && mostrarConfirmacion(true) == JOptionPane.YES_OPTION) {
                 solitario.iniciar(true);
             }
 
@@ -95,5 +96,11 @@ public class PanelControl extends JPanel implements ActionListener {
 
         solitario.revalidate();
         solitario.repaint();
+    }
+
+    private int mostrarConfirmacion(boolean reinicio) {
+        Object mensaje = "Está a punto de " + (reinicio ? "reiniciar la" : "empezar una nueva") + " partida. ¿Desea " +
+                "abandonar ésta?";
+        return JOptionPane.showConfirmDialog(null, mensaje, "Aviso", JOptionPane.YES_NO_OPTION);
     }
 }
