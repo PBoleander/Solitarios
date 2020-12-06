@@ -32,7 +32,7 @@ public class Registro {
         }
 
         movimientos.add(movimiento);
-        indiceActual = movimientos.size() - 1;
+        indiceActual++;
     }
 
     public void vaciar() {

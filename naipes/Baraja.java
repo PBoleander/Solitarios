@@ -27,8 +27,6 @@ public class Baraja extends Monto {
                 this.naipesAlInicio.add(new Naipe(palo, valor));
             }
         }
-
-        //barajar();
     }
 
     //******************************************************************************************************//

@@ -86,6 +86,7 @@ public class PanelControl extends JPanel implements ActionListener {
             if (!solitario.isVictoria()) {
                 solitario.rehacerMovimiento();
             }
+
         } else if (source.equals(chkMarcadoInferior)) {
             solitario.setMarcadoInferior(chkMarcadoInferior.isSelected());
 
