@@ -15,7 +15,6 @@ public class Monto extends JLayeredPane {
     private static final Color VERDE_OSCURO = new Color(0, 100, 0);
 
     private final boolean bocaAbajo;
-    private final ArrayList<Naipe> naipes;
     private final int gap;
 
     public Monto(boolean todosNaipesIdentificables, boolean bocaAbajo, int maxNaipes) {
@@ -23,7 +22,6 @@ public class Monto extends JLayeredPane {
 
         this.bocaAbajo = bocaAbajo;
         this.gap = todosNaipesIdentificables ? VGAP_VISIBLE : VGAP_INVISIBLE;
-        this.naipes = new ArrayList<>();
 
         // Con esto el tamaño de VisorMontos será el correcto y estrictamente necesario
         setPreferredSize(new Dimension(Naipe.ANCHO, Naipe.ALTO + maxNaipes * gap));
@@ -33,7 +31,7 @@ public class Monto extends JLayeredPane {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (naipes.isEmpty()) {
+        if (getNumNaipes() == 0) {
             g.setColor(VERDE_OSCURO);
             g.fillRoundRect(0, 0, Naipe.ANCHO, Naipe.ALTO, 14, 14);
         }
@@ -47,15 +45,13 @@ public class Monto extends JLayeredPane {
             naipe.setBounds(0, getNumNaipes() * gap, Naipe.ANCHO, Naipe.ALTO);
             add(naipe, Integer.valueOf(getNumNaipes()));
 
-            return this.naipes.add(naipe);
+            return true;
         }
         return false;
     }
 
     // Vacía el monto
     public void clear() {
-        this.naipes.clear();
-
         removeAll();
 
         setSize(new Dimension(Naipe.ANCHO, Naipe.ALTO));
@@ -65,7 +61,7 @@ public class Monto extends JLayeredPane {
     public Naipe cogerNaipe() {
         int size = getNumNaipes();
         if (size > 0) {
-            Naipe naipe = this.naipes.remove(size - 1);
+            Naipe naipe = getUltimoNaipe();
 
             remove(naipe);
 
@@ -73,20 +69,15 @@ public class Monto extends JLayeredPane {
         } else return null;
     }
 
-    // Devuelve la lista de naipes del monto
-    ArrayList<Naipe> getNaipes() {
-        return this.naipes;
-    }
-
     // Devuelve el número de naipes del monto
     public int getNumNaipes() {
-        return this.naipes.size();
+        return getComponentCount();
     }
 
     // Devuelve el naipe de arriba del monto sin quitárselo
     public Naipe getUltimoNaipe() {
-        if (naipes.isEmpty()) return null;
-        else return this.naipes.get(naipes.size() - 1);
+        if (getNumNaipes() == 0) return null;
+        else return (Naipe) getComponent(0);
     }
 
     // Selecciona o deselecciona
@@ -102,5 +93,9 @@ public class Monto extends JLayeredPane {
             }
             getUltimoNaipe().cambiarSeleccion();
         }
+    }
+
+    protected Naipe getNaipe(int i) {
+        return (Naipe) getComponent(i);
     }
 }
