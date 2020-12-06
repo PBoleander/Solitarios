@@ -77,6 +77,9 @@ public class SolitarioA extends Solitario {
             if (!isVictoria()) {
 
                 if (boton == MouseEvent.BUTTON3 && numClics == 2) { // Doble clic secundario
+                    reiniciarMontoSeleccionado(); // Evitará que un naipe seleccionado anteriormente se quede
+                    // seleccionado
+
                     controlMovimientos.subirTodosNaipesPosibles();
 
                     if (isVictoria()) pintarVictoria();
@@ -102,7 +105,7 @@ public class SolitarioA extends Solitario {
                         }
 
                     } else if (numClics == 1 && componenteBajoPuntero == montoManoPorSacar) { // Clic sencillo
-                        if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
+                        reiniciarMontoSeleccionado();
 
                         controlMovimientos.pasarEntreMontosMano();
 
@@ -191,6 +194,8 @@ public class SolitarioA extends Solitario {
     protected void iniciar(boolean reinicio) {
         if (!isVictoria()) visorMensajes.setNumPartidas(numPartidas++); // Se incrementa después porque las partidas
         // se cuentan cuando acaban
+
+        super.reiniciarMontoSeleccionado(); // Si hay monto seleccionado, lo deselecciona
 
         // Se vacían todos los montos
         for (Monto montoSuperior: montosSuperiores) montoSuperior.clear();
