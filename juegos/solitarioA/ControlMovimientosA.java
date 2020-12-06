@@ -9,7 +9,11 @@ import java.util.ArrayList;
 
 class ControlMovimientosA {
 
+    // Se requiere guardar estos montos para poder hacer automáticamente la subida de todos los naipes ya que, por
+    // como está hecho el programa (a base de montos), no se puede subir naipes directamente sin complicar mucho el
+    // código
     private final ArrayList<Monto> montosQuePuedenSubir;
+    // Los naipes se usan para marcarlos/desmarcarlos de manera fácil y limpia (con montos sería más complicado)
     private final ArrayList<Naipe> naipesQuePuedenSubir, naipesQueVanAInferiores;
     private final Monto montoReserva, montoManoPorSacar, montoManoSacado;
     private final Monto[] montosInferiores, montosSuperiores;
@@ -69,6 +73,9 @@ class ControlMovimientosA {
     }
 
     void identificarNaipesQuePuedenSubir() {
+        /*
+        También se tienen que identificar los montos para poder realizar la operación de subida de naipes automática
+         */
         if (!naipesQuePuedenSubir.isEmpty()) {
             marcarNaipesSubidaPosibles(false);
             montosQuePuedenSubir.clear();
@@ -76,22 +83,11 @@ class ControlMovimientosA {
         }
 
         for (Monto montoSuperior: montosSuperiores) {
-            if (sePuedeColocar(montoManoSacado.getUltimoNaipe(), montoSuperior)) {
-                naipesQuePuedenSubir.add(montoManoSacado.getUltimoNaipe());
-                montosQuePuedenSubir.add(montoManoSacado);
-            }
+            addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoManoSacado, montoSuperior);
+            addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoReserva, montoSuperior);
 
-            if (sePuedeColocar(montoReserva.getUltimoNaipe(), montoSuperior)) {
-                naipesQuePuedenSubir.add(montoReserva.getUltimoNaipe());
-                montosQuePuedenSubir.add(montoReserva);
-            }
-
-            for (Monto montoInferior: montosInferiores) {
-                if (sePuedeColocar(montoInferior.getUltimoNaipe(), montoSuperior)) {
-                    naipesQuePuedenSubir.add(montoInferior.getUltimoNaipe());
-                    montosQuePuedenSubir.add(montoInferior);
-                }
-            }
+            for (Monto montoInferior: montosInferiores)
+                addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoInferior, montoSuperior);
         }
 
         marcarNaipesSubidaPosibles(marcadoSuperior);
@@ -104,15 +100,13 @@ class ControlMovimientosA {
         }
 
         for (Monto montoInferior: montosInferiores) {
-            if (sePuedeColocar(montoManoSacado.getUltimoNaipe(), montoInferior))
-                naipesQueVanAInferiores.add(montoManoSacado.getUltimoNaipe());
+            if (montoInferior.getNumNaipes() > 0) { // No tiene sentido marcar todos los montos
 
-            if (sePuedeColocar(montoReserva.getUltimoNaipe(), montoInferior))
-                naipesQueVanAInferiores.add(montoReserva.getUltimoNaipe());
+                addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoManoSacado, montoInferior);
+                addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoReserva, montoInferior);
 
-            for (Monto montoInferior2: montosInferiores) {
-                if (sePuedeColocar(montoInferior2.getUltimoNaipe(), montoInferior))
-                    naipesQueVanAInferiores.add(montoInferior2.getUltimoNaipe());
+                for (Monto montoInferior2 : montosInferiores)
+                    addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoInferior2, montoInferior);
             }
         }
 
@@ -154,13 +148,17 @@ class ControlMovimientosA {
         identificarNaipesQueVanInferiores(); // Actualiza para marcar correctamente cómo ha quedado la situación
     }
 
-    private void subir(Monto monto) {
-        for (Monto montoSuperior: montosSuperiores) {
-            if (sePuedeColocar(monto.getUltimoNaipe(), montoSuperior)) {
-                montoSuperior.meter(monto.cogerNaipe());
-                registro.registrar(new Movimiento(monto, montoSuperior));
-                return;
-            }
+
+
+    private void addMontoYONaipeAArrays(ArrayList<Naipe> naipes, ArrayList<Monto> montos, Monto montoOrigen,
+                                        Monto montoDestino) {
+
+        Naipe naipe = montoOrigen.getUltimoNaipe();
+
+        if (sePuedeColocar(naipe, montoDestino)) {
+            naipes.add(naipe);
+            if (montos != null) montos.add(montoOrigen); // Esto no siempre se usará, viene bien que montos pueda ser
+            // null
         }
     }
 
@@ -229,5 +227,15 @@ class ControlMovimientosA {
 
         // Si los índices son consecutivos en el array, también lo son los naipes
         return iMayor == iMenor + 1 || (iMayor == 0 && iMenor == valores.length - 1);
+    }
+
+    private void subir(Monto monto) {
+        for (Monto montoSuperior: montosSuperiores) {
+            if (sePuedeColocar(monto.getUltimoNaipe(), montoSuperior)) {
+                montoSuperior.meter(monto.cogerNaipe());
+                registro.registrar(new Movimiento(monto, montoSuperior));
+                return;
+            }
+        }
     }
 }
