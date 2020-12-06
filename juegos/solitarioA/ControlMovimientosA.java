@@ -150,6 +150,8 @@ class ControlMovimientosA {
             }
             identificarNaipesQuePuedenSubir(); // Actualiza la lista para seguir subiendo naipes
         }
+
+        identificarNaipesQueVanInferiores(); // Actualiza para marcar correctamente cómo ha quedado la situación
     }
 
     private void subir(Monto monto) {
