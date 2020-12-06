@@ -75,7 +75,8 @@ class VisorMontosA extends JPanel {
         JLabel label = new JLabel("Naipe:"); // Darle texto inicial le da tamaño para que no colapse el GUI
         label.setForeground(Color.WHITE);
         label.setFont(fuenteNormal);
-        label.setPreferredSize(new Dimension(Naipe.ANCHO, 20)); // Para que cuando pasa de una cifra a dos no tarde
+        label.setPreferredSize(new Dimension(Naipe.ANCHO, (int) label.getPreferredSize().getHeight())); // Para que
+        // cuando pasa de una cifra a dos no tarde
 
         return label;
     }
