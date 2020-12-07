@@ -10,6 +10,15 @@ import java.awt.event.MouseListener;
 
 public abstract class Solitario extends JPanel implements MouseListener {
 
+    //*****************************************************************************************************//
+    //**************************************** Variables generales ****************************************//
+    //*****************************************************************************************************//
+
+    public static final Font FUENTE_GRANDE = new Font(Font.DIALOG, Font.BOLD, 50);
+    public static final Font FUENTE_NORMAL = new Font(Font.DIALOG, Font.PLAIN, 14);
+    public static final int HGAP = 24;
+    public static final int VGAP = 20;
+
     private final Registro registro;
 
     public Solitario(LayoutManager layoutManager) {

@@ -5,8 +5,6 @@ import java.awt.*;
 
 class Boton extends JButton {
 
-    static final Font fuente = new Font(Font.DIALOG, Font.PLAIN, 12);
-
     //*****************************************************************************************************//
     //******************************************** Constructor ********************************************//
     //*****************************************************************************************************//
@@ -32,7 +30,7 @@ class Boton extends JButton {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setFont(fuente);
+        g.setFont(Solitario.FUENTE_NORMAL);
         FontMetrics fm = g.getFontMetrics();
 
         // Para que la sombra se vea se tiene que disminuir el área pintada de background ya que no pinta nada si

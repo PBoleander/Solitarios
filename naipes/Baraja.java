@@ -9,7 +9,7 @@ public class Baraja extends Monto {
     //****************************************** Variables miembro ******************************************//
     //*******************************************************************************************************//
 
-    private final ArrayList<Naipe> naipesAlInicio;
+    private final ArrayList<Naipe> naipesAlInicio; // Si lo hago Monto no funciona, la ventana no aparece
     private final Random random = new Random();
 
     //*****************************************************************************************************//

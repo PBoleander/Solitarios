@@ -62,12 +62,12 @@ public class SolitarioA extends Solitario {
 
         setBackground(new Color(0, 150, 0));
 
-        iniciar(false);
+        iniciar(false); // Empieza la partida
     }
 
     /*
     Se encarga de:
-        - Doble clic
+        - Doble clic (tanto en botón izquierdo como derecho): subir una carta/todas las cartas posibles, respectivamente
         - Clic en montoManoPorSacar
      */
     @Override
@@ -122,7 +122,7 @@ public class SolitarioA extends Solitario {
     /*
     Se encarga de:
         - Clics en cualquier monto que no sea montoManoPorSacar
-            -- Intenta colocar en monto clicado el naipeEnMano (si lo hay)
+            -- Intenta colocar en monto clicado el naipe seleccionado (si lo hay)
             -- Si no, selecciona/deselecciona el monto clicado
      */
     @Override
@@ -189,11 +189,11 @@ public class SolitarioA extends Solitario {
         super.reiniciarMontoSeleccionado(); // Si hay monto seleccionado, lo deselecciona
 
         // Se vacían todos los montos
-        for (Monto montoSuperior: montosSuperiores) montoSuperior.clear();
-        for (Monto montoInferior: montosInferiores) montoInferior.clear();
-        montoManoPorSacar.clear();
-        montoManoSacado.clear();
-        montoReserva10.clear();
+        for (Monto montoSuperior: montosSuperiores) montoSuperior.removeAll();
+        for (Monto montoInferior: montosInferiores) montoInferior.removeAll();
+        montoManoPorSacar.removeAll();
+        montoManoSacado.removeAll();
+        montoReserva10.removeAll();
 
         super.getRegistro().vaciar(); // Se vacía el registro
 
@@ -251,6 +251,8 @@ public class SolitarioA extends Solitario {
         return seHaPodidoColocar;
     }
 
+    // Devuelve si el monto de mano sacado ha llegado a 0 además de haberse provocado por un pase de naipes entre los
+    // dos montos de mano
     private boolean montoManoSacadoHaLlegadoAlFinal(int numNaipesMontoPorSacarAntes, int numNaipesMontoSacadoAntes) {
         int numNaipesMontoPorSacarActual = montoManoPorSacar.getNumNaipes();
         int numNaipesMontoSacadoActual = montoManoSacado.getNumNaipes();
@@ -265,17 +267,22 @@ public class SolitarioA extends Solitario {
         visorMensajes.setNumPartidas(numPartidas++);
     }
 
+    // Se realiza el salto en el historial de movimientos propiamente dicho
     private void saltarEnHistorial(boolean haciaAtras) {
         if (haciaAtras) super.deshacerMovimiento();
         else super.rehacerMovimiento();
     }
 
+    // Realiza el salto en el historial de movimientos además de no dejar el monto de mano sacado a 0 si eso ha sido
+    // provocado por un pase de cartas entre los dos montos de mano
     private void saltarEnHistorialCorregido(boolean haciaAtras) {
         int numNaipesMontoPorSacarAntes = montoManoPorSacar.getNumNaipes();
         int numNaipesMontoSacadoAntes = montoManoSacado.getNumNaipes();
 
         saltarEnHistorial(haciaAtras);
 
+        // Si el monto de mano sacado llega al final (naipes = 0), se procede a volver a saltar en el historial en el
+        // mismo sentido, siempre y cuando eso haya sido provocado por un pase de cartas entre los montos de mano
         if (montoManoSacadoHaLlegadoAlFinal(numNaipesMontoPorSacarAntes, numNaipesMontoSacadoAntes)) {
             saltarEnHistorial(haciaAtras);
         }

@@ -1,5 +1,6 @@
 package juegos.solitarioA;
 
+import juegos.Solitario;
 import naipes.Naipe;
 
 import javax.swing.*;
@@ -7,9 +8,6 @@ import java.awt.*;
 import java.text.DecimalFormat;
 
 class VisorMensajesA extends JLabel {
-
-    private final Font fuenteGrande = new Font(Font.DIALOG, Font.BOLD, 50);
-    private final Font fuenteNormal = new Font(Font.DIALOG, Font.PLAIN, 14);
 
     private boolean victoria;
     private int numPartidas, numVictorias;
@@ -28,7 +26,7 @@ class VisorMensajesA extends JLabel {
         super.paintComponent(g);
 
         g.setColor(Color.WHITE);
-        g.setFont(fuenteNormal);
+        g.setFont(Solitario.FUENTE_NORMAL);
         FontMetrics fm = g.getFontMetrics();
 
         /* Mensaje con el nº de partidas jugadas y ganadas */
@@ -47,7 +45,7 @@ class VisorMensajesA extends JLabel {
 
         /* Mensaje de victoria */
         if (victoria) {
-            g.setFont(fuenteGrande);
+            g.setFont(Solitario.FUENTE_GRANDE);
             fm = g.getFontMetrics();
 
             // Sitúa el texto centrado en la ventana

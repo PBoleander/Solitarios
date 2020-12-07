@@ -1,5 +1,6 @@
 package juegos.solitarioA;
 
+import juegos.Solitario;
 import naipes.Monto;
 import naipes.Naipe;
 
@@ -7,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 class VisorMontosA extends JPanel {
-
-    private final Font fuenteNormal = new Font(Font.DIALOG, Font.PLAIN, 14);
 
     private final JLabel etiquetaReserva, etiquetaManoPorSacar, etiquetaManoSacado;
     private final Monto montoReserva, montoManoPorSacar, montoManoSacado;
@@ -23,7 +22,7 @@ class VisorMontosA extends JPanel {
         this.montoManoSacado = montoManoSacado;
         this.montoReserva = montoReserva;
 
-        final int hGap = 24, vGap = 20;
+        final int hGap = Solitario.HGAP, vGap = Solitario.VGAP;
         final GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(vGap, hGap, vGap, hGap);
         c.anchor = GridBagConstraints.NORTH;
@@ -74,7 +73,7 @@ class VisorMontosA extends JPanel {
     private JLabel nuevoLabel() {
         JLabel label = new JLabel("Naipe:"); // Darle texto inicial le da tamaño para que no colapse el GUI
         label.setForeground(Color.WHITE);
-        label.setFont(fuenteNormal);
+        label.setFont(Solitario.FUENTE_NORMAL);
         label.setPreferredSize(new Dimension(Naipe.ANCHO, (int) label.getPreferredSize().getHeight())); // Para que
         // cuando pasa de una cifra a dos no tarde
 

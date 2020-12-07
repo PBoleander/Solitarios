@@ -38,11 +38,11 @@ public class PanelControl extends JPanel implements ActionListener {
         chkMarcadoSuperior.setOpaque(false);
         chkMarcadoInferior.setForeground(Color.WHITE);
         chkMarcadoSuperior.setForeground(Color.WHITE);
-        chkMarcadoInferior.setFont(Boton.fuente);
-        chkMarcadoSuperior.setFont(Boton.fuente);
+        chkMarcadoInferior.setFont(Solitario.FUENTE_NORMAL);
+        chkMarcadoSuperior.setFont(Solitario.FUENTE_NORMAL);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(20, 24, 0, 0);
+        c.insets = new Insets(Solitario.VGAP, Solitario.HGAP, 0, 0);
         add(btnInicio, c);
         c.gridx = 1;
         add(btnReinicio, c);
@@ -57,6 +57,7 @@ public class PanelControl extends JPanel implements ActionListener {
         c.gridy = 2;
         c.gridwidth = 2;
         add(chkMarcadoSuperior, c);
+        c.insets = new Insets(Solitario.VGAP / 2, Solitario.HGAP, 0, 0);
         c.gridy = 3;
         add(chkMarcadoInferior, c);
 

@@ -2,7 +2,6 @@ package naipes;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Monto extends JLayeredPane {
 
@@ -50,13 +49,6 @@ public class Monto extends JLayeredPane {
         return false;
     }
 
-    // Vacía el monto
-    public void clear() {
-        removeAll();
-
-        setSize(new Dimension(Naipe.ANCHO, Naipe.ALTO));
-    }
-
     // Devuelve la carta de arriba del monto y la quita de éste
     public Naipe cogerNaipe() {
         int size = getNumNaipes();
@@ -77,7 +69,7 @@ public class Monto extends JLayeredPane {
     // Devuelve el naipe de arriba del monto sin quitárselo
     public Naipe getUltimoNaipe() {
         if (getNumNaipes() == 0) return null;
-        else return (Naipe) getComponent(0);
+        else return getNaipe(0);
     }
 
     // Selecciona o deselecciona
