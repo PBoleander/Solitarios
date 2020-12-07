@@ -178,18 +178,7 @@ public class SolitarioA extends Solitario {
 
     @Override
     protected void deshacerMovimiento() {
-        super.deshacerMovimiento();
-
-        controlMovimientos.identificarNaipesQuePuedenSubir();
-        controlMovimientos.identificarNaipesQueVanInferiores();
-    }
-
-    @Override
-    protected void rehacerMovimiento() {
-        super.rehacerMovimiento();
-
-        controlMovimientos.identificarNaipesQuePuedenSubir();
-        controlMovimientos.identificarNaipesQueVanInferiores();
+        saltarEnHistorialCorregido(true);
     }
 
     @Override
@@ -240,6 +229,11 @@ public class SolitarioA extends Solitario {
     }
 
     @Override
+    protected void rehacerMovimiento() {
+        saltarEnHistorialCorregido(false);
+    }
+
+    @Override
     protected void setMarcadoInferior(boolean marcadoInferior) {
         controlMovimientos.setMarcadoInferior(marcadoInferior);
     }
@@ -257,8 +251,36 @@ public class SolitarioA extends Solitario {
         return seHaPodidoColocar;
     }
 
+    private boolean montoManoSacadoHaLlegadoAlFinal(int numNaipesMontoPorSacarAntes, int numNaipesMontoSacadoAntes) {
+        int numNaipesMontoPorSacarActual = montoManoPorSacar.getNumNaipes();
+        int numNaipesMontoSacadoActual = montoManoSacado.getNumNaipes();
+
+        return (numNaipesMontoPorSacarActual != numNaipesMontoPorSacarAntes &&
+                numNaipesMontoSacadoActual != numNaipesMontoSacadoAntes &&
+                numNaipesMontoSacadoActual == 0);
+    }
+
     private void pintarVictoria() {
         visorMensajes.setVictoria(true); // Si se ha ganado, se muestra un mensaje
         visorMensajes.setNumPartidas(numPartidas++);
+    }
+
+    private void saltarEnHistorial(boolean haciaAtras) {
+        if (haciaAtras) super.deshacerMovimiento();
+        else super.rehacerMovimiento();
+    }
+
+    private void saltarEnHistorialCorregido(boolean haciaAtras) {
+        int numNaipesMontoPorSacarAntes = montoManoPorSacar.getNumNaipes();
+        int numNaipesMontoSacadoAntes = montoManoSacado.getNumNaipes();
+
+        saltarEnHistorial(haciaAtras);
+
+        if (montoManoSacadoHaLlegadoAlFinal(numNaipesMontoPorSacarAntes, numNaipesMontoSacadoAntes)) {
+            saltarEnHistorial(haciaAtras);
+        }
+
+        controlMovimientos.identificarNaipesQuePuedenSubir();
+        controlMovimientos.identificarNaipesQueVanInferiores();
     }
 }
