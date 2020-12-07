@@ -1,10 +1,12 @@
 package juegos.solitarios;
 
-import juegos.panelControl.PanelControl;
-import juegos.visoresMontos.VisorMontosA;
 import juegos.controlMovimientos.ControlMovimientosA;
+import juegos.panelControl.PanelControl;
 import juegos.visoresMensajes.VisorMensajesA;
-import naipes.*;
+import juegos.visoresMontos.VisorMontosA;
+import naipes.Baraja;
+import naipes.Monto;
+import naipes.Naipe;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

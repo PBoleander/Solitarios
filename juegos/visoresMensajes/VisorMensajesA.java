@@ -3,9 +3,7 @@ package juegos.visoresMensajes;
 import juegos.solitarios.Solitario;
 import naipes.Naipe;
 
-import javax.swing.*;
 import java.awt.*;
-import java.text.DecimalFormat;
 
 public class VisorMensajesA extends VisorMensajes {
 
@@ -23,18 +21,18 @@ public class VisorMensajesA extends VisorMensajes {
         g.setFont(Solitario.FUENTE_NORMAL);
         FontMetrics fm = g.getFontMetrics();
 
-        /* Mensaje con el nº de partidas jugadas y ganadas */
+        /* Mensaje con el nº de partidas jugadas y ganadas (esquina inferior derecha) */
         String texto = "Partidas jugadas: " + numPartidas +
                         " - Partidas ganadas: " + numVictorias +
                         " (" + porcentaje() + " " + "%)";
-        int x = getWidth() - fm.stringWidth(texto) - 20;
+        int x = getWidth() - fm.stringWidth(texto) - Solitario.HGAP;
         int y = getHeight() - fm.getAscent();
         g.drawString(texto, x, y);
 
-        /* Mensaje con el valor de la carta inicial superior */
+        /* Mensaje con el valor de la carta inicial superior (centrado justo debajo de los montos superiores) */
         texto = "Valor del naipe superior inicial: " + valorNaipeSuperiorInicial;
         x = (getWidth() - fm.stringWidth(texto)) / 2;
-        y = Naipe.ALTO + 60;
+        y = Naipe.ALTO + 3 * Solitario.VGAP;
         g.drawString(texto, x, y);
 
         /* Mensaje de victoria */

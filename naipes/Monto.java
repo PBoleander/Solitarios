@@ -9,7 +9,7 @@ public class Monto extends JLayeredPane {
     public static final int VGAP_INVISIBLE = 2;
     public static final int VGAP_VISIBLE = 20;
 
-    public static Monto montoSeleccionado = null;
+    public static Monto montoSeleccionado = null; // Sólo puede haber un monto seleccionado como máximo
 
     private static final Color VERDE_OSCURO = new Color(0, 100, 0);
 
@@ -58,7 +58,8 @@ public class Monto extends JLayeredPane {
             remove(naipe);
 
             return naipe;
-        } else return null;
+        }
+        return null;
     }
 
     // Devuelve el número de naipes del monto
