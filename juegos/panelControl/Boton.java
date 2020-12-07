@@ -1,4 +1,6 @@
-package juegos;
+package juegos.panelControl;
+
+import juegos.solitarios.Solitario;
 
 import javax.swing.*;
 import java.awt.*;

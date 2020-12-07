@@ -1,4 +1,4 @@
-package juegos;
+package juegos.solitarios;
 
 import juegos.registro.Movimiento;
 import juegos.registro.Registro;
@@ -19,24 +19,20 @@ public abstract class Solitario extends JPanel implements MouseListener {
     public static final int HGAP = 24;
     public static final int VGAP = 20;
 
-    private final Registro registro;
+    final Registro registro;
 
-    public Solitario(LayoutManager layoutManager) {
+    Solitario(LayoutManager layoutManager) {
         super(layoutManager);
 
         this.registro = new Registro();
     }
 
-    protected Registro getRegistro() {
-        return registro;
-    }
+    public abstract void iniciar(boolean reinicio);
+    public abstract boolean isVictoria();
+    public abstract void setMarcadoInferior(boolean marcadoInferior);
+    public abstract void setMarcadoSuperior(boolean marcadoSuperior);
 
-    protected abstract void iniciar(boolean reinicio);
-    protected abstract boolean isVictoria();
-    protected abstract void setMarcadoInferior(boolean marcadoInferior);
-    protected abstract void setMarcadoSuperior(boolean marcadoSuperior);
-
-    protected void deshacerMovimiento() {
+    public void deshacerMovimiento() {
         // Si hay monto seleccionado, se quita antes de proceder
         reiniciarMontoSeleccionado();
 
@@ -54,7 +50,7 @@ public abstract class Solitario extends JPanel implements MouseListener {
         }
     }
 
-    protected void rehacerMovimiento() {
+    public void rehacerMovimiento() {
         // Si hay monto seleccionado, se quita antes de proceder
         reiniciarMontoSeleccionado();
 
@@ -72,7 +68,7 @@ public abstract class Solitario extends JPanel implements MouseListener {
         }
     }
 
-    protected void reiniciarMontoSeleccionado() {
+    void reiniciarMontoSeleccionado() {
         if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
     }
 }

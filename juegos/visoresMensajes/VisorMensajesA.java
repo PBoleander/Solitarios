@@ -1,24 +1,18 @@
-package juegos.solitarioA;
+package juegos.visoresMensajes;
 
-import juegos.Solitario;
+import juegos.solitarios.Solitario;
 import naipes.Naipe;
 
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-class VisorMensajesA extends JLabel {
+public class VisorMensajesA extends VisorMensajes {
 
-    private boolean victoria;
-    private int numPartidas, numVictorias;
     private Naipe.valor valorNaipeSuperiorInicial;
 
-    VisorMensajesA() {
+    public VisorMensajesA() {
         super();
-
-        victoria = false;
-        numPartidas = 0;
-        numVictorias = 0;
     }
 
     @Override
@@ -56,24 +50,7 @@ class VisorMensajesA extends JLabel {
         }
     }
 
-    void setNumPartidas(int numPartidas) {
-        this.numPartidas = numPartidas;
-    }
-
-    void setValorNaipeSuperiorInicial(Naipe.valor valorNaipeSuperiorInicial) {
+    public void setValorNaipeSuperiorInicial(Naipe.valor valorNaipeSuperiorInicial) {
         this.valorNaipeSuperiorInicial = valorNaipeSuperiorInicial;
-    }
-
-    void setVictoria(boolean victoria) {
-        if (victoria) numVictorias++;
-
-        this.victoria = victoria;
-    }
-
-    private String porcentaje() {
-        DecimalFormat df = new DecimalFormat("0.0");
-        double porcentaje = (this.numPartidas == 0) ? 0 : (this.numVictorias * 100D / this.numPartidas);
-
-        return df.format(porcentaje);
     }
 }

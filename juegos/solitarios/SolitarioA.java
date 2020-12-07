@@ -1,7 +1,9 @@
-package juegos.solitarioA;
+package juegos.solitarios;
 
-import juegos.PanelControl;
-import juegos.Solitario;
+import juegos.panelControl.PanelControl;
+import juegos.visoresMontos.VisorMontosA;
+import juegos.controlMovimientos.ControlMovimientosA;
+import juegos.visoresMensajes.VisorMensajesA;
 import naipes.*;
 
 import java.awt.*;
@@ -48,7 +50,7 @@ public class SolitarioA extends Solitario {
         montoReserva10.addMouseListener(this);
 
         this.controlMovimientos = new ControlMovimientosA(montosInferiores, montosSuperiores, montoReserva10,
-                montoManoPorSacar, montoManoSacado, super.getRegistro());
+                montoManoPorSacar, montoManoSacado, registro);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -177,12 +179,12 @@ public class SolitarioA extends Solitario {
     }
 
     @Override
-    protected void deshacerMovimiento() {
+    public void deshacerMovimiento() {
         saltarEnHistorialCorregido(true);
     }
 
     @Override
-    protected void iniciar(boolean reinicio) {
+    public void iniciar(boolean reinicio) {
         if (!isVictoria()) visorMensajes.setNumPartidas(numPartidas++); // Se incrementa después porque las partidas
         // se cuentan cuando acaban
 
@@ -195,7 +197,7 @@ public class SolitarioA extends Solitario {
         montoManoSacado.removeAll();
         montoReserva10.removeAll();
 
-        super.getRegistro().vaciar(); // Se vacía el registro
+        registro.vaciar(); // Se vacía el registro
 
         visorMensajes.setVictoria(false); // Quita el mensaje de victoria si estaba
 
@@ -219,7 +221,7 @@ public class SolitarioA extends Solitario {
     }
 
     @Override
-    protected boolean isVictoria() {
+    public boolean isVictoria() {
         int sumaNaipesSuperiores = 0;
 
         for (Monto montoSuperior: montosSuperiores)
@@ -229,20 +231,19 @@ public class SolitarioA extends Solitario {
     }
 
     @Override
-    protected void rehacerMovimiento() {
+    public void rehacerMovimiento() {
         saltarEnHistorialCorregido(false);
     }
 
     @Override
-    protected void setMarcadoInferior(boolean marcadoInferior) {
+    public void setMarcadoInferior(boolean marcadoInferior) {
         controlMovimientos.setMarcadoInferior(marcadoInferior);
     }
 
     @Override
-    protected void setMarcadoSuperior(boolean marcadoSuperior) {
+    public void setMarcadoSuperior(boolean marcadoSuperior) {
         controlMovimientos.setMarcadoSuperior(marcadoSuperior);
     }
-
 
     private boolean colocarNaipeSeleccionadoEn(Monto monto) {
         boolean seHaPodidoColocar = controlMovimientos.colocarNaipeSeleccionadoEn(monto);

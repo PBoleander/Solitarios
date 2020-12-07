@@ -1,6 +1,6 @@
 package general;
 
-import juegos.solitarioA.SolitarioA;
+import juegos.solitarios.SolitarioA;
 
 import javax.swing.*;
 import java.awt.*;

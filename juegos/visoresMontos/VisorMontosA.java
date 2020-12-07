@@ -1,18 +1,18 @@
-package juegos.solitarioA;
+package juegos.visoresMontos;
 
-import juegos.Solitario;
+import juegos.solitarios.Solitario;
 import naipes.Monto;
 import naipes.Naipe;
 
 import javax.swing.*;
 import java.awt.*;
 
-class VisorMontosA extends JPanel {
+public class VisorMontosA extends JPanel {
 
     private final JLabel etiquetaReserva, etiquetaManoPorSacar, etiquetaManoSacado;
     private final Monto montoReserva, montoManoPorSacar, montoManoSacado;
 
-    VisorMontosA(Monto[] montosInferiores, Monto[] montosSuperiores, Monto montoReserva, Monto montoManoPorSacar,
+    public VisorMontosA(Monto[] montosInferiores, Monto[] montosSuperiores, Monto montoReserva, Monto montoManoPorSacar,
                  Monto montoManoSacado) {
         super(new GridBagLayout());
 
