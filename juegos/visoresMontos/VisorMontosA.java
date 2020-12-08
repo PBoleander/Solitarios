@@ -22,7 +22,9 @@ public class VisorMontosA extends JPanel {
         this.montoManoSacado = montoManoSacado;
         this.montoReserva = montoReserva;
 
-        final int hGap = Solitario.HGAP, vGap = Solitario.VGAP;
+        final int hGap = Solitario.HGAP;
+        final int vGap = Solitario.VGAP;
+
         final GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(vGap, hGap, vGap, hGap);
         c.anchor = GridBagConstraints.NORTH;
