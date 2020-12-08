@@ -141,7 +141,7 @@ public class ControlMovimientosA extends ControlMovimientos {
     @Override
     boolean sePuedeColocar(Naipe naipe, Monto monto) {
         if (naipe != null && monto != null) {
-            if (monto != montoReserva && monto != montoManoPorSacar && monto != montoManoSacado) {
+            if (!monto.equals(montoReserva) && !monto.equals(montoManoPorSacar) && !monto.equals(montoManoSacado)) {
                 if (esMontoSuperior(monto)) {
                     if (monto.getNumNaipes() == 0) { // En monto superior vacío sólo puede ir carta con valor igual al
                         // del primer naipe que se ha colocado en el primer monto superior al inicio de la partida
@@ -184,7 +184,7 @@ public class ControlMovimientosA extends ControlMovimientos {
     // Indica si monto es uno de los superiores
     private boolean esMontoSuperior(Monto monto) {
         for (Monto montoSuperior: montosSuperiores) {
-            if (monto == montoSuperior) return true;
+            if (monto.equals(montoSuperior)) return true;
         }
         return false;
     }

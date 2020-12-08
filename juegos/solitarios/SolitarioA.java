@@ -96,7 +96,7 @@ public class SolitarioA extends Solitario {
                 } else if (boton == MouseEvent.BUTTON1) { // Clic izquierdo
 
                     if (numClics > 0 && numClics % 2 == 0) { // Doble clic (intenta subir carta a montos superiores)
-                        if (componenteBajoPuntero != montoManoPorSacar) {
+                        if (!componenteBajoPuntero.equals(montoManoPorSacar)) {
                             Monto monto = (Monto) componenteBajoPuntero;
                             if (Monto.montoSeleccionado == null) // En teoría no debería suceder pero por si acaso
                                 monto.cambiarSeleccion(); // Para que colocar pueda hacer la comprobación correctamente
@@ -110,7 +110,7 @@ public class SolitarioA extends Solitario {
                             repaint();
                         }
 
-                    } else if (numClics == 1 && componenteBajoPuntero == montoManoPorSacar) { // Clic sencillo
+                    } else if (numClics == 1 && componenteBajoPuntero.equals(montoManoPorSacar)) { // Clic sencillo
                         reiniciarMontoSeleccionado();
 
                         controlMovimientos.pasarEntreMontosMano();
@@ -136,7 +136,7 @@ public class SolitarioA extends Solitario {
 
             if (mouseEvent.getClickCount() < 2 && componenteBajoPuntero instanceof Monto) {
                 Monto monto = (Monto) componenteBajoPuntero;
-                if (monto != montoManoPorSacar) {
+                if (!monto.equals(montoManoPorSacar)) {
                     if (!controlMovimientos.colocarNaipeSeleccionadoEn(monto)) // Intenta colocar el naipe seleccionado
                         // (si existe) en el monto clicado
                         monto.cambiarSeleccion(); // Si no puede, cambia la selección del monto
