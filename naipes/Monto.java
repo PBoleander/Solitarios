@@ -23,7 +23,7 @@ public class Monto extends JLayeredPane {
         this.gap = todosNaipesIdentificables ? VGAP_VISIBLE : VGAP_INVISIBLE;
 
         // Con esto el tamaño de VisorMontos será el correcto y estrictamente necesario
-        setPreferredSize(new Dimension(Naipe.ANCHO, Naipe.ALTO + maxNaipes * gap));
+        setPreferredSize(new Dimension(Naipe.ANCHO, Naipe.ALTO + gap * (maxNaipes - 1)));
     }
 
     @Override

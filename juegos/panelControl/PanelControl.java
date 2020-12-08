@@ -22,7 +22,7 @@ public class PanelControl extends JPanel implements ActionListener {
 
         this.btnDeshacer = new Boton("Deshacer");
         this.btnRehacer = new Boton("Rehacer");
-        this.btnInicio = new Boton("Nueva");
+        this.btnInicio = new Boton("Nuevo");
         this.btnReinicio = new Boton("Reiniciar");
 
         btnDeshacer.addActionListener(this);
@@ -59,6 +59,7 @@ public class PanelControl extends JPanel implements ActionListener {
         c.gridy = 2;
         c.gridwidth = 2;
         add(chkMarcadoSuperior, c);
+        // Para juntar los dos checkboxes un poco más que el resto
         c.insets = new Insets(Solitario.VGAP / 2, Solitario.HGAP, 0, 0);
         c.gridy = 3;
         add(chkMarcadoInferior, c);
