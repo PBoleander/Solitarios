@@ -4,8 +4,10 @@ import juegos.solitarios.Solitario;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-class Boton extends JButton {
+class Boton extends JButton implements MouseListener {
 
     //*****************************************************************************************************//
     //******************************************** Constructor ********************************************//
@@ -21,13 +23,30 @@ class Boton extends JButton {
         setForeground(Color.BLACK);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setBorder(null);
+        addMouseListener(this); // Cambia de color cuando es pulsado
     }
 
-    //*****************************************************************************************************//
-    //****************************************** Métodos default ******************************************//
-    //*****************************************************************************************************//
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {}
 
-    // Pinta este componente
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+        setBackground(Color.GRAY);
+        setForeground(Color.WHITE);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+        setBackground(Color.WHITE);
+        setForeground(Color.BLACK);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {}
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {}
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
