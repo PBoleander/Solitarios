@@ -4,7 +4,6 @@ import juegos.controlMovimientos.ControlMovimientosA;
 import juegos.panelControl.PanelControl;
 import juegos.visoresMensajes.VisorMensajesA;
 import juegos.visoresMontos.VisorMontosA;
-import naipes.Baraja;
 import naipes.Monto;
 import naipes.Naipe;
 
@@ -13,7 +12,6 @@ import java.awt.event.MouseEvent;
 
 public class SolitarioA extends Solitario {
 
-    private final Baraja baraja;
     private final ControlMovimientosA controlMovimientos;
     private final Monto[] montosInferiores, montosSuperiores;
     private final Monto montoReserva10, montoManoPorSacar, montoManoSacado;
@@ -21,14 +19,8 @@ public class SolitarioA extends Solitario {
 
     private Component componenteBajoPuntero;
 
-    private int numPartidas;
-
     public SolitarioA() {
         super(new GridBagLayout());
-
-        this.baraja = new Baraja();
-
-        this.numPartidas = 0;
 
         this.montosInferiores = new Monto[4];
         this.montosSuperiores = new Monto[4];
@@ -187,7 +179,8 @@ public class SolitarioA extends Solitario {
 
     @Override
     public void iniciar(boolean reinicio) {
-        if (!isVictoria()) visorMensajes.setNumPartidas(numPartidas++); // Se incrementa después porque las partidas
+        if (isVictoria()) visorMensajes.setVictoria(false); // Quita el mensaje de victoria si estaba
+        else visorMensajes.setNumPartidas(numPartidas++); // Se incrementa después porque las partidas
         // se cuentan cuando acaban
 
         super.reiniciarMontoSeleccionado(); // Si hay monto seleccionado, lo deselecciona
@@ -200,8 +193,6 @@ public class SolitarioA extends Solitario {
         montoReserva10.removeAll();
 
         registro.vaciar(); // Se vacía el registro
-
-        visorMensajes.setVictoria(false); // Quita el mensaje de victoria si estaba
 
         if (reinicio) baraja.recuperar();
         else baraja.barajar();

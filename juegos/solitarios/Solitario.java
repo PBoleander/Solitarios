@@ -2,6 +2,7 @@ package juegos.solitarios;
 
 import juegos.registro.Movimiento;
 import juegos.registro.Registro;
+import naipes.Baraja;
 import naipes.Monto;
 
 import javax.swing.*;
@@ -19,12 +20,17 @@ public abstract class Solitario extends JPanel implements MouseListener {
     public static final int HGAP = 24;
     public static final int VGAP = 20;
 
+    final Baraja baraja;
     final Registro registro;
+
+    int numPartidas;
 
     Solitario(LayoutManager layoutManager) {
         super(layoutManager);
 
+        this.baraja = new Baraja();
         this.registro = new Registro();
+        this.numPartidas = 0;
     }
 
     public abstract void iniciar(boolean reinicio);
