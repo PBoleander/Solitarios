@@ -209,8 +209,7 @@ public class SolitarioA extends Solitario {
 
         while (baraja.getNumNaipes() > 0) montoManoPorSacar.meter(baraja.cogerNaipe());
 
-        controlMovimientos.identificarNaipesQuePuedenSubir();
-        controlMovimientos.identificarNaipesQueVanInferiores();
+        controlMovimientos.actualizarMovimientosPosibles();
     }
 
     @Override
@@ -281,7 +280,6 @@ public class SolitarioA extends Solitario {
             saltarEnHistorial(haciaAtras);
         }
 
-        controlMovimientos.identificarNaipesQuePuedenSubir();
-        controlMovimientos.identificarNaipesQueVanInferiores();
+        controlMovimientos.actualizarMovimientosPosibles();
     }
 }

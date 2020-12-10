@@ -36,59 +36,39 @@ public class ControlMovimientosA extends ControlMovimientos {
         this.naipesQueVanAInferiores = new ArrayList<>();
     }
 
+    public void actualizarMovimientosPosibles() {
+        if (marcadoSuperior) {
+            identificarNaipesQuePuedenSubir();
+            marcarNaipesSubidaPosibles(true);
+        }
+        if (marcadoInferior) {
+            identificarNaipesQueVanInferiores();
+            marcarNaipesInferiorPosibles(true);
+        }
+    }
+
     public void setMarcadoInferior(boolean marcadoInferior) {
         this.marcadoInferior = marcadoInferior;
-        marcarNaipesInferiorPosibles(marcadoInferior);
+
+        if (marcadoInferior) {
+            identificarNaipesQueVanInferiores();
+            marcarNaipesInferiorPosibles(true);
+
+        } else vaciarLosQuePuedenIrInferiores();
     }
 
     public void setMarcadoSuperior(boolean marcadoSuperior) {
         this.marcadoSuperior = marcadoSuperior;
-        marcarNaipesSubidaPosibles(marcadoSuperior);
+
+        if (marcadoSuperior) {
+            identificarNaipesQuePuedenSubir();
+            marcarNaipesSubidaPosibles(true);
+
+        } else vaciarLosQuePuedenSubir();
     }
 
     public void setNaipeInicialSuperior(Naipe naipeInicialSuperior) {
         this.naipeInicialSuperior = naipeInicialSuperior;
-    }
-
-    public void identificarNaipesQuePuedenSubir() {
-        /*
-        También se tienen que identificar los montos para poder realizar la operación de subida de naipes automática
-         */
-        if (!naipesQuePuedenSubir.isEmpty()) {
-            marcarNaipesSubidaPosibles(false);
-            montosQuePuedenSubir.clear();
-            naipesQuePuedenSubir.clear();
-        }
-
-        for (Monto montoSuperior: montosSuperiores) {
-            addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoManoSacado, montoSuperior);
-            addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoReserva, montoSuperior);
-
-            for (Monto montoInferior: montosInferiores)
-                addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoInferior, montoSuperior);
-        }
-
-        marcarNaipesSubidaPosibles(marcadoSuperior);
-    }
-
-    public void identificarNaipesQueVanInferiores() {
-        if (!naipesQueVanAInferiores.isEmpty()) {
-            marcarNaipesInferiorPosibles(false);
-            naipesQueVanAInferiores.clear();
-        }
-
-        for (Monto montoInferior: montosInferiores) {
-            if (montoInferior.getNumNaipes() > 0) { // No tiene sentido marcar todos los montos
-
-                addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoManoSacado, montoInferior);
-                addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoReserva, montoInferior);
-
-                for (Monto montoInferior2 : montosInferiores)
-                    addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoInferior2, montoInferior);
-            }
-        }
-
-        marcarNaipesInferiorPosibles(marcadoInferior);
     }
 
     public void pasarEntreMontosMano() {
@@ -111,8 +91,7 @@ public class ControlMovimientosA extends ControlMovimientos {
         // Registra el movimiento
         registro.registrar(new Movimiento(montoManoPorSacar, montoManoSacado, numNaipes));
 
-        identificarNaipesQuePuedenSubir();
-        identificarNaipesQueVanInferiores();
+        actualizarMovimientosPosibles();
     }
 
     public void subirTodosNaipesPosibles() {
@@ -123,16 +102,14 @@ public class ControlMovimientosA extends ControlMovimientos {
             identificarNaipesQuePuedenSubir(); // Actualiza la lista para seguir subiendo naipes
         }
 
-        identificarNaipesQueVanInferiores(); // Actualiza para marcar correctamente cómo ha quedado la situación
+        if (marcadoInferior) identificarNaipesQueVanInferiores(); // Actualiza para marcar correctamente cómo ha
+        // quedado la situación
     }
 
     public boolean colocarNaipeSeleccionadoEn(Monto monto) {
         boolean colocado = super.colocarNaipeSeleccionadoEn(monto);
 
-        if (colocado) {
-            identificarNaipesQuePuedenSubir();
-            identificarNaipesQueVanInferiores();
-        }
+        if (colocado) actualizarMovimientosPosibles();
 
         return colocado;
     }
@@ -189,6 +166,36 @@ public class ControlMovimientosA extends ControlMovimientos {
         return false;
     }
 
+    private void identificarNaipesQuePuedenSubir() {
+        /*
+        También se tienen que identificar los montos para poder realizar la operación de subida de naipes automática
+         */
+        vaciarLosQuePuedenSubir();
+
+        for (Monto montoSuperior: montosSuperiores) {
+            addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoManoSacado, montoSuperior);
+            addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoReserva, montoSuperior);
+
+            for (Monto montoInferior: montosInferiores)
+                addMontoYONaipeAArrays(naipesQuePuedenSubir, montosQuePuedenSubir, montoInferior, montoSuperior);
+        }
+    }
+
+    private void identificarNaipesQueVanInferiores() {
+        vaciarLosQuePuedenIrInferiores();
+
+        for (Monto montoInferior: montosInferiores) {
+            if (montoInferior.getNumNaipes() > 0) { // No tiene sentido marcar todos los montos
+
+                addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoManoSacado, montoInferior);
+                addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoReserva, montoInferior);
+
+                for (Monto montoInferior2 : montosInferiores)
+                    addMontoYONaipeAArrays(naipesQueVanAInferiores, null, montoInferior2, montoInferior);
+            }
+        }
+    }
+
     private void marcarNaipesInferiorPosibles(boolean marcado) {
         for (Naipe naipe: naipesQueVanAInferiores) {
             naipe.setMarcadoInferior(marcado);
@@ -208,6 +215,21 @@ public class ControlMovimientosA extends ControlMovimientos {
                 registro.registrar(new Movimiento(monto, montoSuperior));
                 return;
             }
+        }
+    }
+
+    private void vaciarLosQuePuedenIrInferiores() {
+        if (!naipesQueVanAInferiores.isEmpty()) {
+            marcarNaipesInferiorPosibles(false);
+            naipesQueVanAInferiores.clear();
+        }
+    }
+
+    private void vaciarLosQuePuedenSubir() {
+        if (!naipesQuePuedenSubir.isEmpty()) {
+            marcarNaipesSubidaPosibles(false);
+            montosQuePuedenSubir.clear();
+            naipesQuePuedenSubir.clear();
         }
     }
 }
