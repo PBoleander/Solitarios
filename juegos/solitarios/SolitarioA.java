@@ -1,7 +1,7 @@
 package juegos.solitarios;
 
 import juegos.controlMovimientos.ControlMovimientosA;
-import juegos.panelControl.PanelControl;
+import juegos.panelControl.PanelControlA;
 import juegos.visoresMensajes.VisorMensajesA;
 import juegos.visoresMontos.VisorMontosA;
 import naipes.Monto;
@@ -50,7 +50,7 @@ public class SolitarioA extends Solitario {
         c.gridx = 0;
         c.gridy = 0;
         c.anchor = GridBagConstraints.NORTHWEST;
-        add(new PanelControl(this), c);
+        add(new PanelControlA(this), c);
 
         c.fill = GridBagConstraints.BOTH; // Para que visorMensajes ocupe toda la ventana
         add(visorMensajes = new VisorMensajesA(), c);

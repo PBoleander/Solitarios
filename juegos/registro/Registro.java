@@ -25,14 +25,16 @@ public class Registro {
     }
 
     public void registrar(Movimiento movimiento) {
-        // Si se registra nuevo movimiento, se borran movimientos posteriores a posición actual en el historial
-        if (indiceActual < movimientos.size() - 1) {
-            while (movimientos.size() - 1 > indiceActual)
-                movimientos.remove(movimientos.size() - 1);
-        }
+        if (movimiento != null) {
+            // Si se registra nuevo movimiento, se borran movimientos posteriores a posición actual en el historial
+            if (indiceActual < movimientos.size() - 1) {
+                while (movimientos.size() - 1 > indiceActual)
+                    movimientos.remove(movimientos.size() - 1);
+            }
 
-        movimientos.add(movimiento);
-        indiceActual++;
+            movimientos.add(movimiento);
+            indiceActual++;
+        }
     }
 
     public void vaciar() {

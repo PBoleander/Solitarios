@@ -7,11 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelControl extends JPanel implements ActionListener {
+abstract class PanelControl extends JPanel implements ActionListener {
+
+    final GridBagConstraints c = new GridBagConstraints();
+    final Solitario solitario;
 
     private final Boton btnDeshacer, btnRehacer, btnInicio, btnReinicio;
-    private final JCheckBox chkMarcadoInferior, chkMarcadoSuperior;
-    private final Solitario solitario;
 
     public PanelControl(Solitario solitario) {
         super(new GridBagLayout());
@@ -30,20 +31,6 @@ public class PanelControl extends JPanel implements ActionListener {
         btnInicio.addActionListener(this);
         btnReinicio.addActionListener(this);
 
-        this.chkMarcadoInferior = new JCheckBox("Marcar naipes a inferiores", false);
-        this.chkMarcadoSuperior = new JCheckBox("Marcar naipes a superiores", false);
-
-        chkMarcadoInferior.addActionListener(this);
-        chkMarcadoSuperior.addActionListener(this);
-
-        chkMarcadoInferior.setOpaque(false);
-        chkMarcadoSuperior.setOpaque(false);
-        chkMarcadoInferior.setForeground(Color.WHITE);
-        chkMarcadoSuperior.setForeground(Color.WHITE);
-        chkMarcadoInferior.setFont(Solitario.FUENTE_NORMAL);
-        chkMarcadoSuperior.setFont(Solitario.FUENTE_NORMAL);
-
-        GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(Solitario.VGAP, Solitario.HGAP, 0, 0);
         add(btnInicio, c);
         c.gridx = 1;
@@ -53,19 +40,6 @@ public class PanelControl extends JPanel implements ActionListener {
         add(btnDeshacer, c);
         c.gridx = 1;
         add(btnRehacer, c);
-
-        c.anchor = GridBagConstraints.WEST;
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 2;
-        add(chkMarcadoSuperior, c);
-        // Para juntar los dos checkboxes un poco más que el resto
-        c.insets = new Insets(Solitario.VGAP / 2, Solitario.HGAP, 0, 0);
-        c.gridy = 3;
-        add(chkMarcadoInferior, c);
-
-        solitario.setMarcadoInferior(chkMarcadoInferior.isSelected());
-        solitario.setMarcadoSuperior(chkMarcadoSuperior.isSelected());
     }
 
     @Override
@@ -90,17 +64,7 @@ public class PanelControl extends JPanel implements ActionListener {
             if (!solitario.isVictoria()) {
                 solitario.rehacerMovimiento();
             }
-
-        } else if (source.equals(chkMarcadoInferior)) {
-            solitario.setMarcadoInferior(chkMarcadoInferior.isSelected());
-
-        } else if (source.equals(chkMarcadoSuperior)) {
-            solitario.setMarcadoSuperior(chkMarcadoSuperior.isSelected());
-
         }
-
-        solitario.revalidate();
-        solitario.repaint();
     }
 
     private int mostrarConfirmacion(boolean reinicio) {
