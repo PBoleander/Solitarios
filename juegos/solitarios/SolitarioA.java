@@ -127,9 +127,12 @@ public class SolitarioA extends Solitario {
             if (mouseEvent.getClickCount() < 2 && componenteBajoPuntero instanceof Monto) {
                 Monto monto = (Monto) componenteBajoPuntero;
                 if (!monto.equals(montoManoPorSacar)) {
-                    if (!controlMovimientos.colocarNaipeSeleccionadoEn(monto)) // Intenta colocar el naipe seleccionado
+                    if (controlMovimientos.colocarNaipeSeleccionadoEn(monto)) { // Intenta colocar el naipe seleccionado
                         // (si existe) en el monto clicado
-                        monto.cambiarSeleccion(); // Si no puede, cambia la selección del monto
+                        if (isVictoria()) pintarVictoria();
+
+                    } else
+                        monto.cambiarSeleccion(); // Si no puede colocarlo, cambia la selección del monto
                 }
 
                 revalidate();
