@@ -119,27 +119,29 @@ public class ControlMovimientosA extends ControlMovimientos {
     boolean sePuedeColocar(Naipe naipe, Monto monto) {
         if (naipe != null && monto != null) {
             if (!monto.equals(montoReserva) && !monto.equals(montoManoPorSacar) && !monto.equals(montoManoSacado)) {
+                Naipe ultimoNaipeMonto = monto.getUltimoNaipe();
+
                 if (esMontoSuperior(monto)) {
                     if (monto.getNumNaipes() == 0) { // En monto superior vacío sólo puede ir carta con valor igual al
                         // del primer naipe que se ha colocado en el primer monto superior al inicio de la partida
-                        return (naipe.getValor() == naipeInicialSuperior.getValor());
+                        return (naipe.getValor().equals(naipeInicialSuperior.getValor()));
 
                         // Si el monto superior está ocupado, ha de ser del mismo palo y con valor = valor de la última
                         // carta + 1
-                    } else return (naipe.getPalo() == monto.getUltimoNaipe().getPalo() &&
-                            sonValoresConsecutivos(naipe.getValor(), monto.getUltimoNaipe().getValor()));
+                    } else return (naipe.getPalo().equals(ultimoNaipeMonto.getPalo()) &&
+                            sonValoresConsecutivos(naipe.getValor(), ultimoNaipeMonto.getValor()));
 
                 } else { // El monto no es superior
                     // Cuando la carta sea la primera que puede ocupar monto superior no se debe poder meter, ni otra
                     // carta ponerse sobre ésta.
                     if ((monto.getNumNaipes() > 0 &&
-                            monto.getUltimoNaipe().getValor() == naipeInicialSuperior.getValor()) ||
-                            naipe.getValor() == naipeInicialSuperior.getValor()) return false;
+                            ultimoNaipeMonto.getValor().equals(naipeInicialSuperior.getValor())) ||
+                            naipe.getValor().equals(naipeInicialSuperior.getValor())) return false;
 
                         // El monto ha de estar vacío o la carta a poner debe ser de distinto palo y con un valor
                         // inmediatamente inferior al de la última carta de ese monto.
-                    else return (monto.getNumNaipes() == 0 || (naipe.getPalo() != monto.getUltimoNaipe().getPalo() &&
-                            sonValoresConsecutivos(monto.getUltimoNaipe().getValor(), naipe.getValor())));
+                    else return (monto.getNumNaipes() == 0 || (!naipe.getPalo().equals(ultimoNaipeMonto.getPalo()) &&
+                            sonValoresConsecutivos(ultimoNaipeMonto.getValor(), naipe.getValor())));
                 }
             }
         }

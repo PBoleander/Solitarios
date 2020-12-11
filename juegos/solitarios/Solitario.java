@@ -31,6 +31,8 @@ public abstract class Solitario extends JPanel implements MouseListener {
         this.baraja = new Baraja();
         this.registro = new Registro();
         this.numPartidas = 0;
+
+        setBackground(new Color(0, 150, 0));
     }
 
     public abstract void iniciar(boolean reinicio);
