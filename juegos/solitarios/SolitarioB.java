@@ -5,6 +5,7 @@ import juegos.panelControl.PanelControlB;
 import juegos.visoresMensajes.VisorMensajesB;
 import juegos.visoresMontos.VisorMontosB;
 import naipes.Monto;
+import naipes.Naipe;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -147,9 +148,12 @@ public class SolitarioB extends Solitario {
 
     @Override
     public boolean isVictoria() {
-        return montoManoPorSacar.getNumNaipes() == 0 &&
-                montoManoSacado.getNumNaipes() == 0 &&
-                montoReserva10.getNumNaipes() == 0;
+        int sumaNaipes = 0;
+        for (Monto montoInferior: montosInferiores) {
+            sumaNaipes += montoInferior.getNumNaipes();
+        }
+
+        return sumaNaipes == Naipe.palo.values().length * Naipe.valor.values().length;
     }
 
     @Override
