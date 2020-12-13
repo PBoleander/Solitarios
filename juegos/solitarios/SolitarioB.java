@@ -118,6 +118,11 @@ public class SolitarioB extends Solitario {
     }
 
     @Override
+    public void deshacerMovimiento() {
+        saltarEnHistorialCorregido(true);
+    }
+
+    @Override
     public void iniciar(boolean reinicio) {
         if (isVictoria()) visorMensajes.setVictoria(false); // Quita el mensaje de victoria si estaba
         else visorMensajes.setNumPartidas(numPartidas++); // Se incrementa después porque las partidas
@@ -157,6 +162,11 @@ public class SolitarioB extends Solitario {
     }
 
     @Override
+    public void rehacerMovimiento() {
+        saltarEnHistorialCorregido(false);
+    }
+
+    @Override
     public void setMarcadoInferior(boolean marcadoInferior) {
         controlMovimientos.setMarcadoInferior(marcadoInferior);
     }
@@ -167,8 +177,42 @@ public class SolitarioB extends Solitario {
 
     }
 
+    // Devuelve si el monto de mano sacado ha llegado a 0 además de haberse provocado por un pase de naipes entre los
+    // dos montos de mano
+    private boolean montoManoSacadoHaLlegadoAlFinal(int numNaipesMontoPorSacarAntes, int numNaipesMontoSacadoAntes) {
+        int numNaipesMontoPorSacarActual = montoManoPorSacar.getNumNaipes();
+        int numNaipesMontoSacadoActual = montoManoSacado.getNumNaipes();
+
+        return (numNaipesMontoPorSacarActual != numNaipesMontoPorSacarAntes &&
+                numNaipesMontoSacadoActual != numNaipesMontoSacadoAntes &&
+                numNaipesMontoSacadoActual == 0);
+    }
+
     private void pintarVictoria() {
         visorMensajes.setVictoria(true); // Si se ha ganado, se muestra un mensaje
         visorMensajes.setNumPartidas(numPartidas++);
+    }
+
+    // Se realiza el salto en el historial de movimientos propiamente dicho
+    private void saltarEnHistorial(boolean haciaAtras) {
+        if (haciaAtras) super.deshacerMovimiento();
+        else super.rehacerMovimiento();
+    }
+
+    // Realiza el salto en el historial de movimientos además de no dejar el monto de mano sacado a 0 si eso ha sido
+    // provocado por un pase de cartas entre los dos montos de mano
+    private void saltarEnHistorialCorregido(boolean haciaAtras) {
+        int numNaipesMontoPorSacarAntes = montoManoPorSacar.getNumNaipes();
+        int numNaipesMontoSacadoAntes = montoManoSacado.getNumNaipes();
+
+        saltarEnHistorial(haciaAtras);
+
+        // Si el monto de mano sacado llega al final (naipes = 0), se procede a volver a saltar en el historial en el
+        // mismo sentido, siempre y cuando eso haya sido provocado por un pase de cartas entre los montos de mano
+        if (montoManoSacadoHaLlegadoAlFinal(numNaipesMontoPorSacarAntes, numNaipesMontoSacadoAntes)) {
+            saltarEnHistorial(haciaAtras);
+        }
+
+        controlMovimientos.actualizarMovimientosPosibles();
     }
 }
