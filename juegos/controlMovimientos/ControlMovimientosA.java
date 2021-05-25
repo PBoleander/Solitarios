@@ -99,6 +99,12 @@ public class ControlMovimientosA extends ControlMovimientos {
             for (Monto monto: montosQuePuedenSubir) {
                 subir(monto);
             }
+            // Si el montoManoSacado se queda vacío sacará nuevas cartas
+            if (montosQuePuedenSubir.contains(montoManoSacado)) {
+                if (montoManoSacado.getNumNaipes() == 0) {
+                    pasarEntreMontosMano();
+                }
+            }
             identificarNaipesQuePuedenSubir(); // Actualiza la lista para seguir subiendo naipes
         }
 
