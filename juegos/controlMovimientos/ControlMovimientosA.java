@@ -95,6 +95,11 @@ public class ControlMovimientosA extends ControlMovimientos {
     }
 
     public void subirTodosNaipesPosibles() {
+        // Para que funcione aun si no están marcadas las cartas
+        if (!marcadoSuperior) {
+            identificarNaipesQuePuedenSubir(); // Rellena lista montosQuePuedenSubir
+        }
+
         while (!montosQuePuedenSubir.isEmpty()) {
             for (Monto monto: montosQuePuedenSubir) {
                 subir(monto);
