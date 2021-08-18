@@ -40,10 +40,8 @@ abstract class ControlMovimientos {
         int iMayor = 0;
         int iMenor = 0;
 
-        while (valorMayor != valores[iMayor] || valorMenor != valores[iMenor]) {
-            if (valorMayor != valores[iMayor]) iMayor++;
-            if (valorMenor != valores[iMenor]) iMenor++;
-        }
+        while (valorMayor != valores[iMayor]) iMayor++;
+        while (valorMenor != valores[iMenor]) iMenor++;
 
         // Si los índices son consecutivos en el array, también lo son los naipes
         return iMayor == iMenor + 1 || (iMayor == 0 && iMenor == valores.length - 1);
