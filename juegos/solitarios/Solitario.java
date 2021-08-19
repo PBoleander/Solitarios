@@ -41,42 +41,37 @@ public abstract class Solitario extends JPanel implements MouseListener {
     public abstract void setMarcadoSuperior(boolean marcadoSuperior);
 
     public void deshacerMovimiento() {
-        // Si hay monto seleccionado, se quita antes de proceder
-        reiniciarMontoSeleccionado();
-
-        Movimiento movimiento = registro.getMovimientoAnterior();
-        if (movimiento != null) {
-            Monto montoOrigen = movimiento.getMontoOrigen();
-            Monto montoDestino = movimiento.getMontoDestino();
-            int numNaipes = movimiento.getNumeroNaipes();
-
-            int i = 0;
-            while (i < numNaipes) {
-                montoOrigen.meter(montoDestino.cogerNaipe());
-                i++;
-            }
-        }
+        baseMoversePorRegistro(true);
     }
 
     public void rehacerMovimiento() {
-        // Si hay monto seleccionado, se quita antes de proceder
-        reiniciarMontoSeleccionado();
-
-        Movimiento movimiento = registro.getMovimientoPosterior();
-        if (movimiento != null) {
-            Monto montoOrigen = movimiento.getMontoOrigen();
-            Monto montoDestino = movimiento.getMontoDestino();
-            int numNaipes = movimiento.getNumeroNaipes();
-
-            int i = 0;
-            while (i < numNaipes) {
-                montoDestino.meter(montoOrigen.cogerNaipe());
-                i++;
-            }
-        }
+        baseMoversePorRegistro(false);
     }
 
     void reiniciarMontoSeleccionado() {
         if (Monto.montoSeleccionado != null) Monto.montoSeleccionado.cambiarSeleccion();
+    }
+
+    private void baseMoversePorRegistro(boolean haciaAtras) {
+        // Si hay monto seleccionado, se quita antes de proceder
+        reiniciarMontoSeleccionado();
+
+        Movimiento movimiento;
+        if (haciaAtras) movimiento = registro.getMovimientoAnterior();
+        else movimiento = registro.getMovimientoPosterior();
+
+        if (movimiento != null) {
+            Monto montoOrigen = movimiento.getMontoOrigen();
+            Monto montoDestino = movimiento.getMontoDestino();
+            int numNaipes = movimiento.getNumeroNaipes();
+
+            int i = 0;
+            while (i < numNaipes) {
+                if (haciaAtras) montoOrigen.meter(montoDestino.cogerNaipe());
+                else montoDestino.meter(montoOrigen.cogerNaipe());
+
+                i++;
+            }
+        }
     }
 }

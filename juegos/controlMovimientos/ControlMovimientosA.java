@@ -117,6 +117,7 @@ public class ControlMovimientosA extends ControlMovimientos {
         // quedado la situación
     }
 
+    @Override
     public boolean colocarNaipeSeleccionadoEn(Monto monto) {
         boolean colocado = super.colocarNaipeSeleccionadoEn(monto);
 
