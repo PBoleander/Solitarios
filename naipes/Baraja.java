@@ -19,7 +19,7 @@ public class Baraja extends Monto {
     public Baraja() {
         super(false,true, 48);
 
-        this.naipesAlInicio = new ArrayList<>(); // Guardará los naipes barajados antes de repartir
+        this.naipesAlInicio = new ArrayList<>(48); // Guardará los naipes barajados antes de repartir
 
         // Llena la reserva con todos los naipes existentes
         for (Naipe.palo palo: Naipe.palo.values()) {
