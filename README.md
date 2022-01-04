@@ -11,6 +11,8 @@ El objetivo final es colocar todas las cartas en los cuatros montos superiores.
 
 Si el jugador quiere puede marcar los naipes que se pueden colocar para faciliar el juego.
 
+Un doble clic sobre una carta hace que ésta suba al monto superior que le toca (si es posible). Un doble clic derecho sube todas las cartas que pueden a montos superiores (especialmente útil cuando la partida ya está claramente resuelta).
+
 ![Juego A](SolitarioA.png)
 
 ## Solitario B
