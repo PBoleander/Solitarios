@@ -1,6 +1,10 @@
 # Solitarios
 Juego de solitarios
 
+**Requiere Java >= 17**
+
+**NOTA: Las imágenes de los naipes no se han subido al repositorio.**
+
 En este programa hay dos variantes de solitario.
 
 ## Solitario A
